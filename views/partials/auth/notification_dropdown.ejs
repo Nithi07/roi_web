@@ -1,0 +1,58 @@
+<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right" style="min-width: 22rem !important;max-height: 900%;overflow-y: scroll;">
+    <div class=" dropdown-header noti-title">
+        <h6 class="text-overflow m-0">Notifications<a style="float: right;" href="/notifications/update/0">
+            <i class="fa fa-eye" aria-hidden="true" style="color: black;"></i>  Read All</a></h6>
+    </div>
+    <div class="uppend_list">
+
+    </div>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$('.cound_val').html(0);
+    $(document).ready(function () {
+        var options = '';
+        // $.ajax({
+        //     url: site_url + "/notifications",
+        //     type: 'GET',
+        //     data: {},
+        //     dataType: 'html',
+        //     success: function (data) {
+        //         var list = JSON.parse(data);
+        //         $('.cound_val').html(list.length);
+        //         var a = 1;
+        //         if(list.length > 0){
+        //             for (var i = 0; i < list.length; i++) {
+        //             if(list[i].TYPE == 'FEEDBACK'){
+        //                 var lable = `<i class="fa fa-comments" aria-hidden="true"></i>`;
+        //                 var path = `<h5><a href="/feedback" >`+ a + '.' + list[i].TYPE + `</a></h5>`;
+        //             }else if(list[i].TYPE == 'ANNOUNCEMENT'){
+        //                 var lable = `<i class="fa fa-bullhorn" aria-hidden="true"></i>`;
+        //                 var path = `<h5><a href="/announcements" >`+ a + '.' + list[i].TYPE + `</a></h5>`;
+        //             }else if(list[i].TYPE == 'PROJECT UPDATES'){
+        //                 var lable = `<i class="fa fa-tasks" aria-hidden="true"></i>`;
+        //                 var path = `<h5><a href="/project_updates" >`+ a + '.' + list[i].TYPE + `</a></h5>`;
+        //             }
+        //             options += `<div class="dropdown-divider"></div>
+        //                         <div class="dropdown-item">
+        //                             `+path+`
+        //                             <h6>Created By:   `+list[i].USERNAME+`</h6>
+        //                             `+lable+`
+        //                             <span style="white-space: pre-wrap;max-width: 100px;">`+ list[i].MESSAGE + `<a href="/notifications/update/`+list[i].USER_NOTIFY_ID+`" style="float: right;">
+        //                                 <i class="fa fa-eye" aria-hidden="true" style="color: black;"></i>  Read
+        //                             </a></span>
+        //                         </div><br>`;
+        //             a++;
+        //         }
+        //         }else{
+        //             options += `<div class="dropdown-divider"></div>
+        //                         <div class="dropdown-item">
+        //                             <span>No data Found</span>
+        //                         </div>`;
+        //         }
+                
+        //         $(".uppend_list").html(options);
+        //     }
+        // });
+    })
+</script>
