@@ -1,0 +1,1529 @@
+<body>
+    <!-- Sidenav -->
+    <% include ../partials/sidebar %>
+    <!-- Main content -->
+    <div class="main-content">
+
+        <div class="loader_post" id="loading">
+            <div class="loader"></div><!-- Place at bottom of page -->
+        </div>
+        <!-- Header -->
+        <% include ../partials/navbar %>
+        <% include ../partials/pages_header %>
+        <!-- Page content -->
+
+        <div class="nav-wrapper">
+            <div>
+                <h2>Minutes Of Meetings</h2>
+            </div>
+
+            <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link mb-sm-3 mb-md-0 active tab-show" data-tabname="PendingMom"
+                        id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab"
+                        aria-controls="tabs-icons-text-1" aria-selected="true">
+                        <i class="far fa-list-alt mr-2" style="font-size: 25px;"></i>Pending to Confirm
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mb-sm-3 mb-md-0 tab-show" data-tabname="ConfirmMom" id="tabs-icons-text-2-tab"
+                        data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2"
+                        aria-selected="false">
+                        <i class="fas fa-bullseye mr-2" style="font-size: 25px;"></i>MOM
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mb-sm-3 mb-md-0 tab-show" data-tabname="ArchiveMom" id="tabs-icons-text-3-tab"
+                        data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3"
+                        aria-selected="false">
+                        <i class="fas fa-bullseye mr-2" style="font-size: 25px;"></i>Archive</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Modal -->
+
+        <div class="card shadow">
+            <div class="card-body">
+                <input type="hidden" id="currenttabvalue" name="currenttabvalue" value="" />
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
+                        aria-labelledby="tabs-icons-text-1-tab">
+
+                        <div id="insert_mom_btn" class="card card-stats mb-4 mb-xl-0"
+                            style="background-color: #5e72e4;color: white !important;width: 11rem;"><a class="nav-link"
+                                href="/getcreatenewmom">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="card-title text-uppercase text-muted mb-0"
+                                                style="color: white !important;">Add new mom</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div><br>
+
+                        <div id="pendingMomList" data-toggle="modal" data-target="#exampleModal">
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel"
+                        aria-labelledby="tabs-icons-text-2-tab">
+                        <div id="confirmMomList">
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel"
+                        aria-labelledby="tabs-icons-text-3-tab">
+                        <div id="archiveMomList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="close_confirm" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="mom_id_value" name="mom_id_value" value="" />
+                    <input type="hidden" id="title_value" name="title_value" value="" />
+                    <input type="hidden" id="meetingdate_value" name="meetingdate_value" value="" />
+                    <input type="hidden" id="username_value" name="username_value" value="" />
+                    <input type="hidden" id="nextmeetingdate_value" name="nextmeetingdate_value" value="" />
+                    <input type="hidden" id="organizer_value" name="organizer_value" value="" />
+                    <input type="hidden" id="createdon_value" name="createdon_value" value="" />
+                    <input type="hidden" id="useremail_value" name="useremail_value" value="" />
+                    <input type="hidden" id="preparedby_value" name="useremail_value" value="" />
+
+                    <h2 class="card-title" id="edit_title"></h2>
+                    <h5 class="card-title" id="edit_meetingdate"></h5>
+                    <h5 class="card-title" id="edit_organizer"></h5>
+                    <h5 class="card-title" id="edit_preparedby"></h5>
+                    <h5 class="card-title" id="edit_createdon"></h5>
+                    <div id="edit_mom_btn">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#insertMomActionPointModal">Add new</button>
+                        <button type="button" onclick="confirmMom()" class="btn btn-primary">Confirm</button>
+                    </div><br>
+
+                    <div class="row" style="border: 1px solid gray; margin: auto;">
+                        <div class="column" style="background-color:#fff; width: 25% !important">
+                            Attendees:
+                        </div>
+                        <div class="column" style="background-color:#fff; width: 64% !important">
+                            <p id="show_attendees"></p>
+                        </div>
+                    </div><br>
+
+                    <div id="show_action_point">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Action Point -->
+    <div class="modal fade" id="insertMomActionPointModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Action Point</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="insertMomActionPoint">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Action Point</label>
+                                    <textarea class="form-control" id="enteractionpoint" name="enteractionpoint"
+                                        rows="3" placeholder="Write a large text here ..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Action By</label>
+                                    <select class="form-control" id="actionby_selected" name="actionby_selected"
+                                        onchange="getActionByVal(this);" data-live-search="true" data-toggle="select">
+                                        <option value="">--Select--</option>
+                                        <% userList.forEach(function (user) { %>
+                                        <option value="<%= user.USER_INFO_ID %>"><%= user.USER_SURNAME %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                                <p id="update_actionby_error" style="color:red"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Expected Completion Date</label>
+                                    <input type="date" id="action_complete_date" name="action_complete_date"
+                                        class="form-control form-control-alternative">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Email To</label>
+                                    <input type="text" name="emailto" id="emailto"
+                                        class="form-control form-control-alternative"></input>
+                                </div>
+                                <p id="update_email_validation_error" style="color:red"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close_action_point_modal" class="btn btn-secondary"
+                        data-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="insertmomactionpoints()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateMomActionPointModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">update Action Point</h5>
+                    <button type="button" id="close_action_point" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="action_point_modal" class="modal-body">
+                    <form id="updateMomActionPoint" method="POST" enctype="multipart/form-data">
+
+                        <input type="hidden" id="action_point_id" name="action_point_id" value="" />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Action Point</label>
+                                    <textarea class="form-control" id="update_enteractionpoint"
+                                        name="update_enteractionpoint" rows="3"
+                                        placeholder="Write a large text here ..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Action By</label>
+                                    <select class="form-control" id="update_actionby_selected"
+                                        name="update_actionby_selected" onchange="getActionByVal(this);"
+                                        data-live-search="true" data-toggle="select">
+                                        <option value="">--Select--</option>
+                                        <% userList.forEach(function (user) { %>
+                                        <option value="<%= user.USER_INFO_ID %>"><%= user.USER_SURNAME %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                                <p id="update_actionby_error" style="color:red"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Expected Completion Date</label>
+                                    <input type="date" id="update_action_complete_date"
+                                        name="update_action_complete_date"
+                                        class="form-control form-control-alternative">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label stacked>Email To</label>
+                                    <input type="text" name="update_emailto" id="update_emailto"
+                                        class="form-control form-control-alternative"></input>
+                                </div>
+                                <p id="email_validation_error" style="color:red"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close_action_point1" class="btn btn-secondary"
+                        data-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="updateactionpoint()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="openSubMeeting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sub Meetings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="subMomList">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Include scripts -->
+    <% include ../partials/scripts %>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- Data Table JavaScript -->
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script> -->
+    <!-- BS JavaScript -->
+    <!-- <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+
+    <!-- reference Moment.js library -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $('#lodingbtn').hide();
+        $("#loading").hide();
+
+        var attendees_array = [];
+        var attendees = '';
+        var send_to_email_array = [];
+
+        var user_list = [];
+        var userarry = [];
+
+        var momListAll = [];
+
+        var notification_user = [];
+        var mom_attendees_user = [];
+
+        $(document).ready(function () {
+
+            var today = moment().format('YYYY-MM-DD');
+            document.getElementById("action_complete_date").value = today;
+
+            $('#show_recurring_meeting').hide();
+            getPendingMomList();
+            get_user_list_all();
+
+            $('#recurring_meeting').click(function () {
+                if ($(this).is(":checked")) {
+                    $('#show_recurring_meeting').show();
+                }
+                else if ($(this).is(":not(:checked)")) {
+                    $('#show_recurring_meeting').hide();
+                }
+            });
+
+        });
+
+
+        function getActionByVal(a) {
+            userarry = [];
+            arr = [];
+            var userDetailsFilter = user_list.find(item => item.USER_INFO_ID == a.value);
+            arr.push(userDetailsFilter);
+            userarry = arr;
+            console.log(userarry);
+        }
+
+        $(document).on('click', '.tab-show', function () {
+            var tab = $(this).data('tabname');
+            $('input[name="currenttabvalue"]').val(tab);
+            var tab_name = $('#currenttabvalue').val();
+
+            if (tab_name == "") {
+                var text = $('#tabs-icons-text').find('.active').data('tabname');
+                var tabtrim = text.trim();
+                tab_name = tabtrim;
+            }
+
+            if (tab_name == 'PendingMom') {
+                getPendingMomList();
+            } else if (tab_name == 'ConfirmMom') {
+                getConfirmMomList();
+            } else {
+                getArchiveMomList();
+            }
+        });
+
+        var user_id = '<%- locals.userInfo.USER_INFO_ID %>';
+        var login_user_name = '<%- locals.userInfo.USER_SURNAME %>';
+        var login_user_email = '<%- locals.userInfo.EMAIL %>';
+
+        function getPendingMomList() {
+
+            $("#loading").show();
+            console.log(user_id);
+            $.ajax({
+                url: site_url + "/getListOfMinutesOfMeeting",
+                type: 'POST',
+                data: {
+                    user_info_id: user_id,
+                    status: 1,
+                    mom_id: 0
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+
+                    var result_pending = '';
+                    $('#pendingMomList').html('');
+
+                    for (let i = 0; i < result.length; i++) {
+
+                        let meeting_date = moment(result[i].MEETING_DATE).format("DD-MM-YYYY");
+                        let next_meeting_date = moment(result[i].NEXT_MEETING_DATE).format("DD-MM-YYYY");
+                        let created_on = moment(result[i].CREATED_ON).format("DD-MM-YYYY hh:mm A");
+
+                        result_pending += '<div class="card card-stats mb-4 mb-lg-0">' +
+                            '<div class="card-body">' +
+                            '<div class="row">' +
+                            '<div class="col edit-show" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date +
+                            '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME +
+                            '" data-createdon ="' + created_on + '" data-useremail="' + result[i].USER_EMAIL + '">' +
+                            '<h5 class="card-title text-uppercase text-muted mb-0">' + result[i].TITLE + '</h5>' +
+                            '<span class="h2 font-weight-bold mb-0">' + meeting_date + '</span>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                    }
+
+                    $('#pendingMomList').append(result_pending);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        function getConfirmMomList() {
+
+            $("#loading").show();
+            console.log(user_id);
+            $.ajax({
+                url: site_url + "/getConfirmMomList",
+                type: 'POST',
+                data: {
+                    user_info_id: user_id,
+                    status: 2,
+                    mom_id: 0
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+
+                    var result_pending = '';
+                    $('#confirmMomList').html('');
+
+                    for (let i = 0; i < result.length; i++) {
+
+                        let meeting_date = moment(result[i].MEETING_DATE).format("DD-MM-YYYY");
+                        let next_meeting_date = moment(result[i].NEXT_MEETING_DATE).format("DD-MM-YYYY");
+                        let created_on = moment(result[i].CREATED_ON).format("DD-MM-YYYY hh:mm A");
+
+                        result_pending += '<div class="card card-stats mb-4 mb-lg-0">' +
+                            '<div class="card-body">' +
+                            '<div class="row">' +
+                            '<div class="col edit-show" data-toggle="modal" data-target="#exampleModal" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date +
+                            '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME +
+                            '" data-createdon ="' + created_on + '" data-useremail="' + result[i].USER_EMAIL + '">' +
+                            '<h5 class="card-title text-uppercase text-muted mb-0">' + result[i].TITLE + '</h5>' +
+                            '<span class="h2 font-weight-bold mb-0">' + meeting_date + '</span>' +
+                            '</div>' +
+                            '<div><h5 class="card-title text-uppercase text-muted mb-0 open-submeeting" data-momid="' + result[i].ID + '" style="color: #23d959 !important;" data-toggle="modal" data-target="#openSubMeeting" >Sub Meetings (' + result[i].MOM_CHILD_COUNT + ')</h5></div>' +
+                            '<div class="col-auto file-download" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date + '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME + '" data-createdon ="' + created_on + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow">' +
+                            '<i class="fa fa-download" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-auto file-download-all" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date + '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME + '" data-createdon ="' + created_on + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow" style="background-color: #5e72e4 !important;">' +
+                            '<i class="fa fa-download" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-auto archive-mom" data-momid="' + result[i].ID + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow" style="background-color: #5e72e4 !important;">' +
+                            '<i class="fa fa-archive" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-auto sub-mom" data-momid="' + result[i].ID + '" style="margin-left: -15px; margin-top: -5px;">' +
+                            '<a class="nav-link" href="/getcreatenewmom?mom_id=' + result[i].ID + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow" style="background-color: #23d959 !important;">' +
+                            '<i class="fa fa-plus" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                    }
+
+                    $('#confirmMomList').append(result_pending);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        function getSubMomList(mom_id) {
+
+            $("#loading").show();
+            console.log(user_id);
+            $.ajax({
+                url: site_url + "/getSubMyMeetingsList",
+                type: 'POST',
+                data: {
+                    user_info_id: user_id,
+                    status: 2,
+                    mom_id: mom_id
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+
+                    var result_pending = '';
+                    $('#subMomList').html('');
+
+                    for (let i = 0; i < result.length; i++) {
+
+                        let meeting_date = moment(result[i].MEETING_DATE).format("DD-MM-YYYY");
+                        let next_meeting_date = moment(result[i].NEXT_MEETING_DATE).format("DD-MM-YYYY");
+                        let created_on = moment(result[i].CREATED_ON).format("DD-MM-YYYY hh:mm A");
+
+                        result_pending += '<div class="card card-stats mb-4 mb-lg-0">' +
+                            '<div class="card-body">' +
+                            '<div class="row">' +
+                            '<div class="col edit-show" data-toggle="modal" data-target="#exampleModal" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date +
+                            '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME +
+                            '" data-createdon ="' + created_on + '" data-useremail="' + result[i].USER_EMAIL + '">' +
+                            '<h5 class="card-title text-uppercase text-muted mb-0">' + result[i].TITLE + '</h5>' +
+                            '<span class="h2 font-weight-bold mb-0">' + meeting_date + '</span>' +
+                            '</div>' +                            
+                            '<div class="col-auto file-download" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date + '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME + '" data-createdon ="' + created_on + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow">' +
+                            '<i class="fa fa-download" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                    }
+
+                    $('#subMomList').append(result_pending);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        function getArchiveMomList() {
+
+            $("#loading").show();
+            console.log(user_id);
+            $.ajax({
+                url: site_url + "/getArchiveMomList",
+                type: 'POST',
+                data: {
+                    user_info_id: user_id,
+                    status: 2,
+                    mom_id: 0
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+
+                    var result_pending = '';
+                    $('#archiveMomList').html('');
+
+                    for (let i = 0; i < result.length; i++) {
+
+                        let meeting_date = moment(result[i].MEETING_DATE).format("DD-MM-YYYY");
+                        let next_meeting_date = moment(result[i].NEXT_MEETING_DATE).format("DD-MM-YYYY");
+                        let created_on = moment(result[i].CREATED_ON).format("DD-MM-YYYY hh:mm A");
+
+                        result_pending += '<div class="card card-stats mb-4 mb-lg-0">' +
+                            '<div class="card-body">' +
+                            '<div class="row">' +
+                            '<div class="col edit-show" data-toggle="modal" data-target="#exampleModal" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date +
+                            '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME +
+                            '" data-createdon ="' + created_on + '" data-useremail="' + result[i].USER_EMAIL + '">' +
+                            '<h5 class="card-title text-uppercase text-muted mb-0">' + result[i].TITLE + '</h5>' +
+                            '<span class="h2 font-weight-bold mb-0">' + meeting_date + '</span>' +
+                            '</div>' +
+                            '<div class="col-auto archive-file-download" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date + '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME + '" data-createdon ="' + created_on + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow">' +
+                            '<i class="fa fa-download" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-auto archive-file-download-all" data-momid="' + result[i].ID + '" data-title="' + result[i].TITLE + '" data-meetingdate="' + meeting_date + '" data-username="' + result[i].USER_SURNAME + '"  data-nextmeetingdate="' + next_meeting_date + '" data-organizer="' + result[i].ORGANIZER_NAME + '" data-createdon ="' + created_on + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow" style="background-color: #5e72e4 !important;">' +
+                            '<i class="fa fa-download" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-auto undo-archive-mom" data-momid="' + result[i].ID + '">' +
+                            '<div class="icon icon-shape bg-danger text-white rounded-circle shadow" style="background-color: #5e72e4 !important;">' +
+                            '<i class="fa fa-undo" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                    }
+
+                    $('#archiveMomList').append(result_pending);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        $(document).on('click', '.file-download', function () {
+            var mom_id = $(this).data('momid');
+            var meeting_date = $(this).data('meetingdate');
+            var organizer = $(this).data('organizer');
+            var createdon = $(this).data('createdon');
+            var title = $(this).data('title');
+            var next_meeting_date = $(this).data('nextmeetingdate');
+            var preparedby = $(this).data('username');
+
+            
+            let status = 2;
+            $.ajax({
+                url: site_url + "/getMomPdfActionPointList",
+                type: 'POST',
+                async: false,
+                data: {
+                    user_info_id: user_id,
+                    status: status,
+                    mom_id: mom_id,
+                    meeting_date: meeting_date,
+                    organizer: organizer,
+                    createdon: createdon,
+                    title: title,
+                    user_name: login_user_name,
+                    next_meeting_date: next_meeting_date,
+                    preparedby: preparedby
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var uri = '/getPdfDownload?mom_id=' + mom_id + '&&user_info_id=' + user_id + '&&meeting_date=' + meeting_date + '&&login_user_name=' + login_user_name;
+                    window.open(uri, "_blank");
+                }
+            });
+
+        });
+
+        $(document).on('click', '.file-download-all', function () {
+            var mom_id = $(this).data('momid');
+            var meeting_date = $(this).data('meetingdate');
+            var organizer = $(this).data('organizer');
+            var createdon = $(this).data('createdon');
+            var title = $(this).data('title');
+            var next_meeting_date = $(this).data('nextmeetingdate');
+            var preparedby = $(this).data('username');
+
+           
+            let status = 2;
+            $.ajax({
+                url: site_url + "/getAllMomPdfActionPointList",
+                type: 'POST',
+                async: false,
+                data: {
+                    user_info_id: user_id,
+                    status: status,
+                    mom_id: mom_id,
+                    meeting_date: meeting_date,
+                    organizer: organizer,
+                    createdon: createdon,
+                    title: title,
+                    user_name: login_user_name,
+                    next_meeting_date: next_meeting_date,
+                    preparedby: preparedby
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var uri = '/getPdfDownload?mom_id=' + mom_id + '&&user_info_id=' + user_id + '&&meeting_date=' + meeting_date + '&&login_user_name=' + login_user_name;
+                    window.open(uri, "_blank");
+                }
+            });
+
+        });
+
+        $(document).on('click', '.archive-mom', function () {
+            var mom_id = $(this).data('momid');
+
+
+            let status = 2;
+            $.ajax({
+                url: site_url + "/getArchiveminutesofmeetings",
+                type: 'POST',
+                async: false,
+                data: {
+                    user_info_id: user_id,
+                    mom_id: mom_id
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    getConfirmMomList();
+                }
+            });
+
+        });
+
+        $(document).on('click', '.undo-archive-mom', function () {
+            var mom_id = $(this).data('momid');
+
+
+            let status = 2;
+            $.ajax({
+                url: site_url + "/getUndoArchiveMomList",
+                type: 'POST',
+                async: false,
+                data: {
+                    user_info_id: user_id,
+                    mom_id: mom_id
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    getArchiveMomList();
+                }
+            });
+
+        });
+
+
+
+        $(document).on('click', '.archive-file-download', function () {
+            var mom_id = $(this).data('momid');
+            var meeting_date = $(this).data('meetingdate');
+            var organizer = $(this).data('organizer');
+            var createdon = $(this).data('createdon');
+            var title = $(this).data('title');
+            var next_meeting_date = $(this).data('nextmeetingdate');
+            var preparedby = $(this).data('username');
+
+          
+            let status = 2;
+            $.ajax({
+                url: site_url + "/getArchiveMomPdfDownload",
+                type: 'POST',
+                async: false,
+                data: {
+                    user_info_id: user_id,
+                    status: status,
+                    mom_id: mom_id,
+                    meeting_date: meeting_date,
+                    organizer: organizer,
+                    createdon: createdon,
+                    title: title,
+                    user_name: login_user_name,
+                    next_meeting_date: next_meeting_date,
+                    preparedby: preparedby
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var uri = '/getPdfDownload?mom_id=' + mom_id + '&&user_info_id=' + user_id + '&&meeting_date=' + meeting_date + '&&login_user_name=' + login_user_name;
+                    window.open(uri, "_blank");
+                }
+            });
+
+        });
+
+
+        $(document).on('click', '.archive-file-download-all', function () {
+            var mom_id = $(this).data('momid');
+            var meeting_date = $(this).data('meetingdate');
+            var organizer = $(this).data('organizer');
+            var createdon = $(this).data('createdon');
+            var title = $(this).data('title');
+            var next_meeting_date = $(this).data('nextmeetingdate');
+            var preparedby = $(this).data('username');
+
+            
+            let status = 2;
+            $.ajax({
+                url: site_url + "/getAllArchiveMomPdfActionPointList",
+                type: 'POST',
+                async: false,
+                data: {
+                    user_info_id: user_id,
+                    status: status,
+                    mom_id: mom_id,
+                    meeting_date: meeting_date,
+                    organizer: organizer,
+                    createdon: createdon,
+                    title: title,
+                    user_name: login_user_name,
+                    next_meeting_date: next_meeting_date,
+                    preparedby: preparedby
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var uri = '/getPdfDownload?mom_id=' + mom_id + '&&user_info_id=' + user_id + '&&meeting_date=' + meeting_date + '&&login_user_name=' + login_user_name;
+                    window.open(uri, "_blank");
+                }
+            });
+
+        });
+
+        $(document).on('click','.open-submeeting', function(){
+            var mom_id = $(this).data('momid');
+            getSubMomList(mom_id);
+        });
+
+        $(document).on('click', '.edit-show', function () {
+
+            var mom_id            = $(this).data('momid');
+            var title             = $(this).data('title');
+            var meeting_date      = $(this).data('meetingdate');
+            var user_name         = $(this).data('username');
+            var next_meeting_date = $(this).data('nextmeetingdate');
+            var organizer         = $(this).data('organizer');
+            var createdon         = $(this).data('createdon');
+            var useremail         = $(this).data('useremail');
+
+            $('#mom_id_value').val(mom_id);
+            $('#title_value').val(title);
+            $('#meetingdate_value').val(meeting_date);
+            $('#username_value').val(user_name);
+            $('#nextmeetingdate_value').val(next_meeting_date);
+            $('#organizer_value').val(organizer);
+            $('#createdon_value').val(createdon);
+            $('#useremail_value').val(useremail);
+
+            document.getElementById('edit_title').innerHTML = 'Title: ' + title;
+            document.getElementById('edit_meetingdate').innerHTML = 'Meeting Date: ' + meeting_date;
+            document.getElementById('edit_organizer').innerHTML = 'Organizer: ' + organizer;
+            document.getElementById('edit_preparedby').innerHTML = 'Prepared By: ' + user_name;
+            document.getElementById('edit_createdon').innerHTML = 'Created On: ' + createdon;
+
+            var tab_name = $('#currenttabvalue').val();
+            if (tab_name == "") {
+                var text = $('#tabs-icons-text').find('.active').data('tabname');
+                var tabtrim = text.trim();
+                tab_name = tabtrim;
+            }
+
+            if (tab_name == 'PendingMom') {
+                document.getElementById('edit_mom_btn').style.display = 'block';
+                getMomActionPointList(mom_id, user_name, organizer);
+            } else if (tab_name == 'ConfirmMom') {
+                document.getElementById('edit_mom_btn').style.display = 'none';
+                getConfirmMomActionPointList(mom_id, user_name, organizer);
+            } else {
+                document.getElementById('edit_mom_btn').style.display = 'none';
+                getArchiveMomActionPointList(mom_id, user_name, organizer);
+            }
+
+        });
+
+        function getMomActionPointList(mom_id, user_name, organizer) {
+
+            $("#loading").show();
+            console.log(user_id);
+            $.ajax({
+                url: site_url + "/getMomActionPointList",
+                type: 'POST',
+                data: {
+                    user_info_id: user_id,
+                    status: 0,
+                    mom_id: mom_id
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    var momActionPointListAll = result;
+                    momListAll = momActionPointListAll.filter(x => x.ACTION_POINTS != null);
+                    let length = 1;
+                    attendees = '';
+                    attendees_array = [];
+                    send_to_email_array = [];
+
+                    $('#show_action_point').html('');
+
+                    document.getElementById('show_attendees').innerHTML = '';
+
+                    for (var i in momListAll) {
+                        momListAll[i].INSERT_TYPE = "Inserted";
+                    }
+
+                    for (let i = 0; i < momActionPointListAll.length; i++) {
+
+                        momActionPointListAll[i].INSERT_TYPE = "Inserted";
+
+                        if (momActionPointListAll[i].ACTION_BY_NAME != "" && momActionPointListAll[i].ACTION_BY_NAME != null) {
+
+                            var action_by_name_array = momActionPointListAll[i].ACTION_BY_NAME.split(',');
+
+                            for (let j = 0; j < action_by_name_array.length; j++) {
+                                if (attendees_array.indexOf(action_by_name_array[j]) === -1) {
+                                    attendees_array.push(action_by_name_array[j]);
+                                }
+                            }
+                        }
+
+                        if (momActionPointListAll[i].TO_EMAIL != "" && momActionPointListAll[i].TO_EMAIL != null) {
+                            var email_to_array = momActionPointListAll[i].TO_EMAIL.split(',');
+                            for (let k = 0; k < email_to_array.length; k++) {
+                                if (attendees_array.indexOf(email_to_array[k]) === -1) {
+                                    attendees_array.push(email_to_array[k]);
+                                    send_to_email_array.push(email_to_array[k]);
+                                }
+                            }
+                        }
+
+                        if (momActionPointListAll.length == length) {
+                            let flag = attendees_array.includes(user_name);
+
+                            if (!flag) {
+                                attendees_array.push(user_name);
+                            }
+
+                            let flag_org = attendees_array.includes(organizer);
+
+                            if (!flag_org) {
+                                attendees_array.push(organizer);
+                            }
+                            attendees = arrayToString(attendees_array);
+                        }
+
+                        length++;
+                    }
+
+                    console.log(attendees);
+                    document.getElementById('show_attendees').innerHTML = attendees;
+
+                    var action_point = '';
+
+                    for (let i = 0; i < momListAll.length; i++) {
+
+                        let completed_date = moment(result[i].COMPLETED_DATE).format("DD-MM-YYYY");
+
+                        action_point += '<div  style="border: 1px solid gray;margin-bottom: 10px; ">' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="col-3" style="background-color:#fff; width: 25% !important">Action Point:</div>' +
+                            '<div class="col-7" style="background-color:#fff; width: 64% !important"><p id="show_action_point">' + result[i].ACTION_POINTS + '</p></div>' +
+                            '<div class="col-2" style="background-color:#fff; width: 64% !important">' +
+                            '<span onclick="updateactionpointarray(' + i + ')" data-toggle="modal" data-target="#updateMomActionPointModal">' +
+                            '<i class="far fa-edit" style="font-size:25px;color:#0de00d"></i></span><br></div></div>' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="col-3" style="background-color:#fff; width: 25% !important">Action By:</div>' +
+                            '<div class="col-9" style="background-color:#fff; width: 64% !important">' +
+                            '<p id="show_action_by">' + result[i].ACTION_BY_NAME + '</p></div></div>' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="col-3" style="background-color:#fff; width: 25% !important">When:</div>' +
+                            '<div class="col-9" style="background-color:#fff; width: 64% !important">' +
+                            '<p id="show_when">' + completed_date + '</p></div></div></div>';
+
+                    }
+                    $('#show_action_point').html(action_point);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        function getConfirmMomActionPointList(mom_id, user_name, organizer) {
+
+            $("#loading").show();
+            console.log(user_id);
+            $.ajax({
+                url: site_url + "/getMomActionPointList",
+                type: 'POST',
+                data: {
+                    user_info_id: user_id,
+                    status: 0,
+                    mom_id: mom_id
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    var momActionPointListAll = result;
+                    momListAll = momActionPointListAll.filter(x => x.ACTION_POINTS != null);
+                    let length = 1;
+                    attendees = '';
+                    attendees_array = [];
+                    send_to_email_array = [];
+
+                    $('#show_action_point').html('');
+
+                    document.getElementById('show_attendees').innerHTML = '';
+
+                    for (var i in momListAll) {
+                        momListAll[i].INSERT_TYPE = "Inserted";
+                    }
+
+                    for (let i = 0; i < momActionPointListAll.length; i++) {
+
+                        momActionPointListAll[i].INSERT_TYPE = "Inserted";
+
+                        if (momActionPointListAll[i].ACTION_BY_NAME != "" && momActionPointListAll[i].ACTION_BY_NAME != null) {
+
+                            var action_by_name_array = momActionPointListAll[i].ACTION_BY_NAME.split(',');
+
+                            for (let j = 0; j < action_by_name_array.length; j++) {
+                                if (attendees_array.indexOf(action_by_name_array[j]) === -1) {
+                                    attendees_array.push(action_by_name_array[j]);
+                                }
+                            }
+                        }
+
+                        if (momActionPointListAll[i].TO_EMAIL != "" && momActionPointListAll[i].TO_EMAIL != null) {
+                            var email_to_array = momActionPointListAll[i].TO_EMAIL.split(',');
+                            for (let k = 0; k < email_to_array.length; k++) {
+                                if (attendees_array.indexOf(email_to_array[k]) === -1) {
+                                    attendees_array.push(email_to_array[k]);
+                                    send_to_email_array.push(email_to_array[k]);
+                                }
+                            }
+                        }
+
+                        if (momActionPointListAll.length == length) {
+                            let flag = attendees_array.includes(user_name);
+
+                            if (!flag) {
+                                attendees_array.push(user_name);
+                            }
+
+                            let flag_org = attendees_array.includes(organizer);
+
+                            if (!flag_org) {
+                                attendees_array.push(organizer);
+                            }
+                            attendees = arrayToString(attendees_array);
+                        }
+
+                        length++;
+                    }
+
+                    console.log(attendees);
+                    document.getElementById('show_attendees').innerHTML = attendees;
+
+                    var action_point = '';
+
+                    for (let i = 0; i < momListAll.length; i++) {
+
+                        let completed_date = moment(result[i].COMPLETED_DATE).format("DD-MM-YYYY");
+
+                        action_point += '<div  style="border: 1px solid gray;margin-bottom: 10px; ">' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="col-3" style="background-color:#fff; width: 25% !important">Action Point:</div>' +
+                            '<div class="col-7" style="background-color:#fff; width: 64% !important"><p id="show_action_point">' + result[i].ACTION_POINTS + '</p></div>' +
+                            '<div class="col-2" style="background-color:#fff; width: 64% !important">' +
+                            '</div></div>' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="col-3" style="background-color:#fff; width: 25% !important">Action By:</div>' +
+                            '<div class="col-9" style="background-color:#fff; width: 64% !important">' +
+                            '<p id="show_action_by">' + result[i].ACTION_BY_NAME + '</p></div></div>' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="col-3" style="background-color:#fff; width: 25% !important">When:</div>' +
+                            '<div class="col-9" style="background-color:#fff; width: 64% !important">' +
+                            '<p id="show_when">' + completed_date + '</p></div></div></div>';
+
+                    }
+                    $('#show_action_point').html(action_point);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        function getArchiveMomActionPointList(mom_id, user_name, organizer) {
+
+            $("#loading").show();
+            console.log(user_id);
+            $.ajax({
+                url: site_url + "/getArchiveMomActionPointList",
+                type: 'POST',
+                data: {
+                    user_info_id: user_id,
+                    status: 0,
+                    mom_id: mom_id
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    var momActionPointListAll = result;
+                    momListAll = momActionPointListAll.filter(x => x.ACTION_POINTS != null);
+                    let length = 1;
+                    attendees = '';
+                    attendees_array = [];
+                    send_to_email_array = [];
+
+                    $('#show_action_point').html('');
+
+                    document.getElementById('show_attendees').innerHTML = '';
+
+                    for (var i in momListAll) {
+                        momListAll[i].INSERT_TYPE = "Inserted";
+                    }
+                    for (let i = 0; i < momActionPointListAll.length; i++) {
+
+                        momActionPointListAll[i].INSERT_TYPE = "Inserted";
+
+                        if (momActionPointListAll[i].ACTION_BY_NAME != "" && momActionPointListAll[i].ACTION_BY_NAME != null) {
+
+                            var action_by_name_array = momActionPointListAll[i].ACTION_BY_NAME.split(',');
+
+                            for (let j = 0; j < action_by_name_array.length; j++) {
+                                if (attendees_array.indexOf(action_by_name_array[j]) === -1) {
+                                    attendees_array.push(action_by_name_array[j]);
+                                }
+                            }
+                        }
+
+                        if (momActionPointListAll[i].TO_EMAIL != "" && momActionPointListAll[i].TO_EMAIL != null) {
+                            var email_to_array = momActionPointListAll[i].TO_EMAIL.split(',');
+                            for (let k = 0; k < email_to_array.length; k++) {
+                                if (attendees_array.indexOf(email_to_array[k]) === -1) {
+                                    attendees_array.push(email_to_array[k]);
+                                    send_to_email_array.push(email_to_array[k]);
+                                }
+                            }
+                        }
+
+                        if (momActionPointListAll.length == length) {
+                            let flag = attendees_array.includes(user_name);
+
+                            if (!flag) {
+                                attendees_array.push(user_name);
+                            }
+
+                            let flag_org = attendees_array.includes(organizer);
+
+                            if (!flag_org) {
+                                attendees_array.push(organizer);
+                            }
+                            attendees = arrayToString(attendees_array);
+                        }
+
+                        length++;
+                    }
+                    console.log(attendees);
+                    document.getElementById('show_attendees').innerHTML = attendees;
+
+                    var action_point = '';
+                    for (let i = 0; i < momListAll.length; i++) {
+                        let completed_date = moment(result[i].COMPLETED_DATE).format("DD-MM-YYYY");
+                        action_point += '<div  style="border: 1px solid gray;margin-bottom: 10px; ">' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="column" style="background-color:#fff; width: 25% !important">Action Point:</div>' +
+                            '<div class="column" style="background-color:#fff; width: 64% !important"><p id="show_action_point">' + result[i].ACTION_POINTS + '</p></div></div>' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="column" style="background-color:#fff; width: 25% !important">Action By:</div>' +
+                            '<div class="column" style="background-color:#fff; width: 64% !important">' +
+                            '<p id="show_action_by">' + result[i].ACTION_BY_NAME + '</p></div></div>' +
+                            '<div class="row" style="margin-bottom: 10px; margin: auto;">' +
+                            '<div class="column" style="background-color:#fff; width: 25% !important">When:</div>' +
+                            '<div class="column" style="background-color:#fff; width: 64% !important">' +
+                            '<p id="show_when">' + completed_date + '</p></div></div></div>';
+
+                    }
+                    $('#show_action_point').append(action_point);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        function arrayToString(arr) {
+            let str = '';
+            arr.forEach(function (i, index) {
+                str += i;
+                if (index != (arr.length - 1)) {
+                    str += ', ';
+                };
+            });
+            return str;
+        }
+
+        function confirmMom() {
+
+            var mom_id = $('#mom_id_value').val();
+            var title = $('#title_value').val();
+            var meeting_date = $('#meetingdate_value').val();
+            var username = $('#username_value').val();
+            var next_meeting_date = $('#nextmeetingdate_value').val();
+            var organizer = $('#organizer_value').val();
+            var createdon = $('#createdon_value').val();
+            var useremail = $('#useremail_value').val();
+
+            if (send_to_email_array.length > 0) {
+                email_to = JSON.stringify(send_to_email_array);
+            } else {
+                email_to = '';
+            }
+            $("#loading").show();
+            $.ajax({
+                url: site_url + "/getConfirmMomActionPoints",
+                type: 'POST',
+                data: {
+                    mom_id: mom_id,
+                    user_info_id: user_id,
+                    login_user_name: login_user_name,
+                    title: title,
+                    meeting_date: meeting_date,
+                    organizer: organizer,
+                    prepared_by: username,
+                    to_email: email_to,
+                    user_email: login_user_email
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    $("#close_confirm").click();
+                    $("#loading").hide();
+                    inserttaskComments(mom_id);
+                    getPendingMomList();
+                }
+            });
+
+        }
+
+        function inserttaskComments(mom_id) {
+
+            console.log('Starting ROI insert..');
+            let length = 1;
+
+            for (let i = 0; i < momListAll.length; i++) {
+
+                let actionpointarray = [];
+                actionpointarray.push(momListAll[i]);
+                var action_by_array = momListAll[i].ACTION_BY.split(',');
+                console.log('Action by array', action_by_array);
+
+                for (let j = 0; j < action_by_array.length; j++) {
+
+                    let action_by = parseInt(action_by_array[j]);
+
+                    if (notification_user.indexOf(action_by) === -1) {
+                        notification_user.push(action_by);
+                        mom_attendees_user.push(action_by);
+                        console.log('Notification User', notification_user);
+                    }
+
+                    $.ajax({
+                        url: site_url + "/getInsertRoiObjectivesFromMom",
+                        type: 'POST',
+                        data: {
+                            created_by: action_by,
+                            modified_by: action_by,
+                            insert_type: 'Current',
+                            COMMENTS: JSON.stringify(actionpointarray),
+                            comments_type: 'O',
+                            login_user_id: user_id,
+                            label_type: 'Current',
+                            start_date: null,
+                            end_date: null,
+                            selected_date: null,
+                            mom_id: mom_id
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            var result = JSON.parse(data);
+                            console.log(result);
+                            console.log('Roi Inserted successfully...');
+                            sendNotificationForMom();
+
+                        }
+                    });
+                }
+            }
+        }
+
+        function sendNotificationForMom() {
+
+            var meeting_date = $('#meetingdate_value').val();
+            var mom_title = $('#title_value').val();
+            console.log('Starting Notification sent..');
+
+            for (let j = 0; j < notification_user.length; j++) {
+
+                let action_by = parseInt(this.notification_user[j]);
+
+                if (action_by != user_id) {
+                    console.log(action_by);
+                    $.ajax({
+                        url: site_url + "/pushnotificationsinglechat",
+                        type: 'POST',
+                        data: {
+                            title: 'MOM',
+                            content: 'Minutes Of Meeting ',
+                            message: mom_title + ' - ' + meeting_date,
+                            app_platform: 'ios',
+                            user_info_id: action_by,
+                            loggedin_user_id: user_id,
+                            trans_type: 'Mom'
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            var result = JSON.parse(data);
+                            console.log('Notification sent successfully...');
+                            console.log(result);
+                        }
+                    });
+                }
+
+            }
+        }
+
+        function get_user_list_all() {
+
+            $.ajax({
+                url: site_url + "/UserList",
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    user_list = result;
+                    console.log(result);
+                }
+            });
+
+        }
+
+        function insertmomactionpoints() {
+
+
+            var enteractionpoint = '';
+            var actionby_selected = '';
+            var action_complete_date = '';
+            var emailto = '';
+
+            var mom_id = $('#mom_id_value').val();
+            var user_name = $('#username_value').val();
+            var organizer = $('#organizer_value').val();
+
+
+            var x = $("#insertMomActionPoint").serializeArray();
+
+            $.each(x, function (i, field) {
+
+                console.log(field);
+
+                if (field.name == "enteractionpoint") {
+                    enteractionpoint = field.value;
+                } else if (field.name == "actionby_selected") {
+                    actionby_selected = field.value;
+                } else if (field.name == "action_complete_date") {
+                    action_complete_date = field.value;
+                } else if (field.name == "emailto") {
+                    emailto = field.value;
+                }
+            });
+
+            if (userarry.length == 0) {
+                $('#update_actionby_error').html('Please select action by.');
+                return;
+            } else {
+                $('#update_actionby_error').html('');
+            }
+
+            if (emailto != "" && emailto != null) {
+                var emailto_array = emailto.split(',');
+                for (let i = 0; i < emailto_array.length; i++) {
+                    let email_valid_flag = validateEmail(emailto_array[i]);
+                    if (!email_valid_flag) {
+                        $('#update_email_validation_error').html('Please enter valid email address.');
+                        return;
+                    } else {
+                        $('#update_email_validation_error').html('');
+                    }
+                }
+            }
+
+            console.log(enteractionpoint + '-' + actionby_selected + '-' + action_complete_date + '-' + emailto);
+
+            var result_user_id = userarry.map(a => a.USER_INFO_ID);
+            console.log(result_user_id);
+            var user_id_list = arrayToString(result_user_id);
+
+            var result_user_name = userarry.map(a => a.USER_SURNAME);
+            console.log(result_user_name);
+            var user_name_list = arrayToString(result_user_name);
+
+            $.ajax({
+                url: site_url + "/getUpdateInsertActionPointsv1",
+                type: 'POST',
+                data: {
+                    mom_id: mom_id,
+                    action_point: enteractionpoint,
+                    action_by_id: user_id_list,
+                    action_by_name: user_name_list,
+                    action_complete_date: action_complete_date,
+                    user_info_id: user_id,
+                    emailto: emailto
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    getMomActionPointList(mom_id, user_name, organizer);
+                    $("#close_action_point_modal").click();
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function updateactionpointarray(i) {
+
+
+            var action_complete_date = moment(momListAll[i].COMPLETED_DATE).format('YYYY-MM-DD');
+
+            document.getElementById('update_enteractionpoint').value = momListAll[i].ACTION_POINTS;
+            document.getElementById('update_action_complete_date').value = action_complete_date;
+            document.getElementById('update_emailto').value = momListAll[i].TO_EMAIL;
+            document.getElementById('action_point_id').value = momListAll[i].ACTION_POINT_ID;
+
+            let userSelect = [];
+            var action_by_array = momListAll[i].ACTION_BY.split(',');
+            console.log('Action by array', action_by_array);
+            for (let i = 0; i < action_by_array.length; i++) {
+                userSelect.push(parseInt(action_by_array[i]));
+            }
+
+            document.getElementById('update_actionby_selected').value = userSelect;
+
+        }
+
+        function updateactionpoint() {
+
+            var mom_id = $('#mom_id_value').val();
+            var user_name = $('#username_value').val();
+            var organizer = $('#organizer_value').val();
+
+            userarry = [];
+            var updated_enteractionpoint = $('#update_enteractionpoint').val();
+            var updated_actionby_selected = $('#update_actionby_selected').val();
+            var updated_action_complete_date = $('#update_action_complete_date').val();
+            var updated_emailto = $('#update_emailto').val();
+
+            var action_point_id = $('#action_point_id').val();
+
+            if (userarry.length == 0) {
+
+                userarry = [];
+                arr = [];
+                var userDetailsFilter = user_list.find(item => item.USER_INFO_ID == updated_actionby_selected);
+                arr.push(userDetailsFilter);
+                userarry = arr;
+                console.log(userarry);
+            }
+
+
+            if (updated_emailto != "" && updated_emailto != null) {
+                var emailto_array = updated_emailto.split(',');
+                for (let i = 0; i < emailto_array.length; i++) {
+                    let email_valid_flag = validateEmail(emailto_array[i]);
+                    if (!email_valid_flag) {
+                        $('#email_validation_error').html('Please enter valid email address.');
+                        return;
+                    } else {
+                        $('#email_validation_error').html('');
+                    }
+                }
+            }
+
+            var result_user_id = userarry.map(a => a.USER_INFO_ID);
+            var user_id_list = arrayToString(result_user_id);
+
+            var result_user_name = userarry.map(a => a.USER_SURNAME);
+            var user_name_list = arrayToString(result_user_name);
+
+            $.ajax({
+                url: site_url + "/getUpdateMinutesOfMeetingv1",
+                type: 'POST',
+                data: {
+                    action_point_id: action_point_id,
+                    action_point: updated_enteractionpoint,
+                    action_completed_date: updated_action_complete_date,
+                    user_info_id: user_id,
+                    action_by_id: user_id_list,
+                    action_by_name: user_name_list,
+                    emailto: updated_emailto
+                },
+                dataType: 'html',
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    $("#loading").hide();
+                    $("#close_action_point1").click();
+                    getMomActionPointList(mom_id, user_name, organizer);
+                }
+            });
+
+        }
+
+    </script>
+    <style>
+        .card-label {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+            background-color: #f1f1f1;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 25%;
+            padding: 10px;
+            /* height: 200px; */
+            /* Should be removed. Only for demonstration */
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</body>

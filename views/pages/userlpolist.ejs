@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css"
+        href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        .button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button2 {
+            background-color: #008CBA;
+        }
+
+        /* Blue */
+        .button3 {
+            background-color: #f44336;
+        }
+
+        /* Red */
+        .button4 {
+            background-color: #e7e7e7;
+            color: black;
+        }
+
+        /* Gray */
+        .button5 {
+            background-color: #555555;
+        }
+
+        /* Black */
+
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 180px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .rejectclose {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .rejectclose:hover,
+        .rejectclose:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1 style="text-align: center;">LPO Pending Approval List</h1><br><br>
+    <table id="lpo_table">
+        <thead>
+            <tr>
+                <th>LPO ID</th>
+                <th>Supplier Name</th>
+                <th>Purpose of LPO</th>
+                <th>Validity</th>
+                <th>Delivery Address</th>
+                <th>Operational Unit</th>
+                <th>Total Amount</th>
+                <th>Created By</th>
+                <th>Payment Term</th>
+                <th>Comments</th>
+                <th>Reject</th>
+                <th>Approve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(i=0;i<lpodata.length; i++) {%>
+                <tr value="<%= lpodata[i].LPO_ID %>">
+                    <td>
+                        <%= lpodata[i].LPO_ID %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].SUPPLIER_NAME %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].SPECIAL_REMARKS %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].VALIDITY %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].DELIVERY_ADDRESS %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].OPERATIONAL_UNIT_NAME %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].TOTAL %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].CREATEDBYNAME %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].PAYMENT_TERM %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].COMMENTS %>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger reject-lpo">Reject</button>
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-success approve-lpo">Approve</button>
+                    </td>
+
+                </tr>
+                <%}%>
+        </tbody>
+    </table>
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="closemodal" class="close" style="margin-left: 95%;">&times;</span>
+            <h3>Approve LPO</h3>
+
+            <form>
+                <input id="LPOno" name="LPOno" type="hidden">
+                <input id="usertype" name="usertype" type="hidden">
+                <input id="userInfoId" name="userInfoId" type="hidden">
+                <textarea id="approveComment" name="approveComment" rows="4" cols="80" style="width: 100% !important;"></textarea>
+                <p id="error_approve_comment" style="font-size: 1.5rem !important; color:red"></p>
+                <br><br>
+                <input type="button" id="closeApproval" class="btn btn-danger" style="margin-left: 74%;" value="Close">
+                <input type="button" id="approveLpo" class="btn btn-success" value="Submit">
+            </form>
+        </div>
+
+    </div>
+
+    <div id="rejectModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="rejectclosemodal" class="rejectclose" style="margin-left: 95%;">&times;</span>
+            <h3>Reject LPO</h3>
+
+            <form>
+                <input id="RejectLPOno" name="RejectLPOno" type="hidden">
+                <input id="Rejectusertype" name="Rejectusertype" type="hidden">
+                <input id="RejectuserInfoId" name="RejectuserInfoId" type="hidden">
+                <textarea id="rejectComment" name="rejectComment" rows="4" cols="80" style="width: 100% !important;"></textarea>
+                <p id="error_reject_comment" style="font-size: 1.5rem !important; color:red"></p>
+                <br><br>
+                <input type="button" id="closeReject" class="btn btn-danger" style="margin-left: 74%;" value="Close">
+                <input type="button" id="rejectLpo" class="btn btn-success" value="Submit">
+            </form>
+        </div>
+
+    </div>
+
+
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+
+
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        var rejectmodal = document.getElementById("rejectModal");
+        var rejectspan = document.getElementsByClassName("rejectclose")[0];
+
+
+        var user_id = '<%- userInfoId %>';
+        var userType = '<%- userType %>';
+        var site_url = '<%- site_url %>';
+
+        $(document).ready(function () {
+
+            var table = $('#lpo_table').DataTable();
+
+            $('#lpo_table tbody').on('click', '.approve-lpo', function () {
+                // Get the modal
+                modal.style.display = "block";
+
+                var data = table.row($(this).parents('tr')).data();
+                console.log(data);
+                console.log(parseInt(data[0]));
+                $('#LPOno').val(data[0]);
+                $('#userInfoId').val(user_id);
+                $('#usertype').val(userType);
+            });
+
+            $('#lpo_table tbody').on('click', '.reject-lpo', function () {
+                // Get the modal
+                rejectmodal.style.display = "block";
+
+                var data = table.row($(this).parents('tr')).data();
+                console.log(data);
+                console.log(parseInt(data[0]));
+                $('#RejectLPOno').val(data[0]);
+                $('#RejectuserInfoId').val(user_id);
+                $('#Rejectusertype').val(userType);
+            });
+
+        });
+
+
+        $('#closemodal').on('click', function () {
+            modal.style.display = "none";
+        });
+
+
+        $('#rejectclosemodal').on('click', function () {
+            rejectmodal.style.display = "none";
+        });
+
+
+        $('#closeApproval').on('click', function () {
+            modal.style.display = "none";
+        });
+
+        $('#closeReject').on('click', function () {
+            rejectmodal.style.display = "none";
+        });
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        window.onclick = function (event) {
+            if (event.target == rejectmodal) {
+                rejectmodal.style.display = "none";
+            }
+        }
+
+        $('#approveLpo').on('click', function () {
+
+            var lpo_id = $('#LPOno').val();
+            var user_info_id = user_id;
+            var usertype = userType;
+
+            console.log(lpo_id + '- ' + user_info_id + '- ' + usertype);
+
+            var v_comments = document.getElementById("approveComment").value;
+
+            if (v_comments == "" || v_comments == null) {
+                document.getElementById("error_approve_comment").innerHTML = 'Field is Requried';
+                return false;
+            } else {
+
+                $.ajax({
+                    url: site_url + "/Approvedatainsert",
+                    type: 'POST',
+                    data: {
+                        LPOno: lpo_id,
+                        approveComment: v_comments,
+                        userInfoId: user_id,
+                        usertype: usertype
+                    },
+                    dataType: 'html',
+                    success: function (data) {
+                        var result = JSON.parse(data);
+                        console.log(result);
+                        alert('LPO is approved successfully.');
+                        modal.style.display = "none";
+                        location.reload();
+                    }
+                });
+            }
+
+        });
+
+        $('#rejectLpo').on('click', function () {
+
+            var lpo_id = $('#RejectLPOno').val();
+            var user_info_id = user_id;
+            var usertype = userType;
+
+            console.log(lpo_id + '- ' + user_info_id + '- ' + usertype);
+
+            var v_comments = document.getElementById("rejectComment").value;
+
+            if (v_comments == "" || v_comments == null) {
+                document.getElementById("error_reject_comment").innerHTML = 'Field is Requried';
+                return false;
+            } else {
+
+                $.ajax({
+                    url: site_url + "/Rejectdatainsert",
+                    type: 'POST',
+                    data: {
+                        RejectLPOno: lpo_id,
+                        rejectComment: v_comments,
+                        RejectuserInfoId: user_id,
+                        usertype: usertype
+                    },
+                    dataType: 'html',
+                    success: function (data) {
+                        var result = JSON.parse(data);
+                        console.log(result);
+                        alert('LPO is rejected successfully.');
+                        rejectmodal.style.display = "none";
+                        location.reload();
+                    }
+                });
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<body>
+    <!-- Sidenav -->
+    <% include ../partials/sidebar %>
+    <!-- Main content -->
+    <div class="main-content">
+
+        <div class="loader_post" id="loading">
+            <div class="loader"></div><!-- Place at bottom of page -->
+        </div>
+        <!-- Header -->
+        <% include ../partials/navbar %>
+        <% include ../partials/pages_header %>
+        <!-- Page content -->
+
+        <div class="card" style="width: 100% !important;">
+
+            <h2 class="card-title">Create Package</h2>
+
+            <form id="insertMomData" method="POST" enctype="multipart/form-data" style="padding: 25px;">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" style="width:50%">
+                            <label stacked>Package Name</label>
+                            <input type="text" name="title" id="title"
+                                class="form-control form-control-alternative"></input>
+                        </div>
+                        <p id="error_subject" style="color: red"></p>
+                    </div>
+                </div>
+
+            </form>            
+        </div>
+    </div>
+
+   
+  
+    </div>
+
+    <!-- Include scripts -->
+    <% include ../partials/scripts %>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- Data Table JavaScript -->
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script> -->
+    <!-- BS JavaScript -->
+    <!-- <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+
+    <!-- reference Moment.js library -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $('#lodingbtn').hide();
+        $("#loading").hide();
+
+        var attendees = '';
+        var mom_attendees_user = [];
+        var send_to_email_array = [];
+        var actionpointarray = [];
+        var arrpoint = [];
+        var arr = [];
+        var attendess_array = [];
+
+        var user_list = [];
+        var userarry = [];
+
+        var action_point_arr_list = '';
+
+        var user_id = '<%- locals.userInfo.USER_INFO_ID %>';
+        var login_user_name = '<%- locals.userInfo.USER_SURNAME %>';
+        var login_user_email = '<%- locals.userInfo.EMAIL %>';
+        var parent_mom_id = '';
+        
+        console.log(user_id+'--'+login_user_name+'--'+login_user_email);
+
+        var today = moment().format('YYYY-MM-DD');
+
+        $(document).ready(function () {
+
+       
+        });
+
+
+        function close_insert_mom() {
+            window.location.href = '/minutesofmeetings';
+        }
+
+    </script>
+
+    <style>
+        .card-label {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+            background-color: #f1f1f1;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 25%;
+            padding: 10px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+
+</body>

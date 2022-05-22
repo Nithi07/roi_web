@@ -1,0 +1,79 @@
+<body>
+    <!-- Sidenav -->
+    <% include ../partials/sidebar %>
+    <!-- Main content -->
+    <div class="main-content">
+
+        <div class="loader_post" id="loading">
+            <div class="loader"></div>
+        </div>
+        <!-- Header -->
+        <% include ../partials/navbar %>
+        <% include ../partials/pages_header %>
+        <!-- Page content -->
+
+        <div class="card" style="width: 100% !important;">
+
+            <div class="card-title">
+                <a href="/selectweektype/<%-roi_userid %>" class="btn btn-dark text-white"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>
+            <div class="card-body">
+               <table class="table table-bordered table-responsive" id="myTable" style="table-layout: fixed;">
+                   <thead class="bg-blue text-white">
+                       <th>S.No</th>
+                       <th>Comments</th>
+                   </thead>
+                   <tbody>
+                    <%for(i=0;i<userComments.length;i++){ %>
+                        <tr>
+                            <td><%-i + 1 %></td>
+                            <td>[<%-userComments[i].TYPE %>] - <%-userComments[i].COMMENTS %>  <br><p style="font-size: 13px;color: red;">updated by: <%-userComments[i].MANAGER %>  on  <%- moment(userComments[i].ORG_MODIFIED_ON).format("DD-MMM-YY hh:mm A") %></p></td>
+                        </tr>
+                       <% } %>
+                   </tbody>
+               </table>
+            </div>
+
+               
+        </div>
+    </div>
+
+    <style>
+        th,td {
+          overflow-wrap: break-word;
+         }
+         p{
+           margin-bottom: 0;
+         }
+         table.dataTable tbody td {
+            padding: 0px;
+            margin: 0;
+        }
+         table td {
+      word-wrap: break-word;         /* All browsers since IE 5.5+ */
+      overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+  }
+    </style>
+  
+  
+
+    <!-- Include scripts -->
+    <% include ../partials/scripts %>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Data Table JavaScript -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script>
+
+
+    <script type="text/javascript">
+        // $('#lodingbtn').hide();
+        $("#loading").hide();
+        $('#myTable').DataTable({
+                paging: true,
+            });
+        
+    </script>
+
+
+    
+</body>

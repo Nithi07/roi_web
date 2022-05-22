@@ -1,0 +1,39 @@
+<body>
+  <!-- Sidenav -->
+  <% include ../partials/sidebar %>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <% include ../partials/navbar %>
+    <!-- Header -->
+    <% include ../partials/header %>
+    <!-- Page content -->
+   
+  </div>
+  <!-- Include scripts -->
+  <% include ../partials/scripts %>
+  <script type="text/javascript">
+  // document.getElementById("unit_details").innerHTML = 0;
+  // document.getElementById("project_update").innerHTML = 0;
+  // document.getElementById("payment_details").innerHTML = 0;
+  // document.getElementById("feedback").innerHTML = 0;
+  // document.getElementById("announcement").innerHTML = 0;
+    $(document).ready(function(){
+      // $.ajax({
+      //       url: site_url+"/Getlablecount",
+      //       type:'GET',
+      //       data: {},
+      //       dataType: 'html',
+      //       success: function(data) {
+      //          var result_data = JSON.parse(data);
+      //         document.getElementById("unit_details").innerHTML = result_data[0].LABLE_COUNT;
+      //         document.getElementById("project_update").innerHTML = result_data[1].LABLE_COUNT;
+      //         document.getElementById("payment_details").innerHTML = result_data[2].LABLE_COUNT;
+      //         document.getElementById("feedback").innerHTML = result_data[3].LABLE_COUNT;
+      //         document.getElementById("announcement").innerHTML = result_data[4].LABLE_COUNT;
+      //       }
+      //   });
+    })
+  </script>
+</body>
+

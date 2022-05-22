@@ -1,0 +1,300 @@
+<body>
+    <!-- Sidenav -->
+    <% include ../partials/sidebar %>
+    <!-- Main content -->
+    <div class="main-content">
+
+        <div class="loader_post" id="loading">
+            <div class="loader"></div><!-- Place at bottom of page -->
+        </div>
+        <!-- Header -->
+        <% include ../partials/navbar %>
+        <% include ../partials/pages_header %>
+        <!-- Page content -->
+
+        <div class="card" style="width: 100% !important;">
+            
+            <div class="card-title">
+                <a href="/users_roi" class="btn btn-dark text-white"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></div>
+            <div class="card-body">
+                <div class="row w-75">
+                  <div class="col">
+                    <div class="card weeks" data-type="pre_week">
+                      <div class="card-body">
+                        <i class="fa fa-calendar" style="font-size:36px;color:rgb(160, 160, 20)"></i> <span class="pl-5"><b>Previous Week</b> </span> 
+                        <h2 class="float-right" id="prev_date"></h2>
+                      </div>
+                    </div>
+                    <span id="pre_week"></span>
+                  </div>
+                </div>
+                <div class="row pt-1 w-75">
+                  <div class="col">
+                    <div class="card weeks" data-type="curr_week">
+                      <div class="card-body">
+                        <i class="fa fa-calendar" style="font-size:36px;color:green"></i> <span class="pl-5"><b>Current Week</b></span> 
+                        <h2 class="float-right" id="curr_date"></h2>
+                      </div>
+                    </div>
+                    <span id="curr_week"></span>
+                  </div>
+                </div>
+                <div class="row pt-1 w-75">
+                  <div class="col">
+                    <div class="card weeks" data-type="nxt_week">
+                      <div class="card-body">
+                        <i class="fa fa-calendar" style="font-size:36px;color:red"></i> <span class="pl-5"><b>Next Week</b></span> 
+                        <h2 class="float-right" id="nxt_date"></h2>
+                      </div>
+                    </div>
+                    <span id="nxt_week"></span>
+                  </div>
+                </div>
+                <div class="row pt-1 w-75">
+                  <div class="col">
+                    <div class="card weeks" data-type="range_week">
+                      <div class="card-body">
+                        <i class="fa fa-calendar" style="font-size:36px;"></i> <span class="pl-5"><b>Archive ROI</b></span> 
+                        <span class="float-right" id="range_date"></span>
+                      </div>
+                    </div>
+                    <span id="range_week"></span>
+                    
+                  </div>
+                </div>
+            </div>
+
+               
+        </div>
+    </div>
+
+    <!-- modal -->
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+           
+              <div class="modal-body">
+                <div class="float-right pb-2"><button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" aria-label="Close">
+                    close
+                 </button></div>
+                <table id="myTable" class="table table-bordered w-100 table-responsive" style="table-layout: fixed;">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>S.No</th>
+                            <th style="width: 646px;">Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                    </tbody>
+                </table>
+              </div>
+             
+          </div>
+        </div>
+      </div>
+   
+  <input type="hidden" data-toggle="modal" data-target=".bd-example-modal-lg" id="roi_commands">
+
+  <style>
+      th,td {
+        overflow-wrap: break-word;
+       }
+       p{
+         margin-bottom: 0;
+       }
+       table.dataTable tbody td {
+          padding: 0px;
+          margin: 0;
+      }
+       table td {
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+}
+  </style>
+
+    <!-- Include scripts -->
+    <% include ../partials/scripts %>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  
+    <!-- reference Moment.js library -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet"/> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+     <!-- Data Table JavaScript -->
+     <script type="text/javascript" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script>
+
+    
+    <script type="text/javascript">
+        // $('#lodingbtn').hide();
+        $("#loading").hide();
+
+        $('#myTable').DataTable({
+                paging: true
+        });
+        var roi_user_id = <%- JSON.stringify(userID) %>;
+        var roi_type = []
+
+        //from to date on label
+        $( function(){
+          moment.lang('en-custom', {
+              week: {
+                  dow: 0
+                //   doy: 6 // Adjust the first week of the year, depends on the country. For the US it's 6. For the UK, 4.
+              }
+          });
+
+          var date = new Date();
+
+           window.next_start = moment(date).weekday(7).format('DD-MMM-YYYY')
+           window.next_end = moment(date).weekday(13).format('DD-MMM-YYYY')
+          $("#nxt_date").html(next_start + " " + "to" + " " + next_end)
+        //   console.log(next_end)
+          
+          window.prev_start = moment(date).weekday(-7).format('DD-MMM-YYYY')
+          window.prev_end = moment(date).weekday(-1).format('DD-MMM-YYYY')
+          $("#prev_date").html(prev_start + " " + "to"+ " " + prev_end)
+          
+          window.current_start = moment(date).weekday(0).format('DD-MMM-YYYY')
+          window.current_end = moment(date).weekday(6).format('DD-MMM-YYYY')
+          $("#curr_date").html(current_start + " " + "to"+ " " + current_end)
+          
+        })
+        
+        //Click Week Type
+        $(".weeks").click(function(){
+            roi_type = []
+            $("#pre_week,#curr_week,#nxt_week,#range_week").html("")
+            var span_id = $(this).data("type");
+            var roi = ``;
+            if(span_id == 'range_week'){
+                roi += `<div class="table table-bordered pl-4">
+                        <form method="post" action="/weeklycmt_userwise">
+                            <div class="row">
+                                <label>From:</label>  <input type="text" name="from_date" class="week_range" id="range_start">
+                            
+                                <label class="pl-3">To: </label>  <input type="text" name="to_date" class="week_range" id="range_end">
+                                <div class="pl-3"><button class="btn btn-dark btn-sm" id="range_submit" type="submit">Submit</button></div>
+                                <input type="hidden" name="roi_userid" value="`+roi_user_id+`">
+                                
+                            </div>
+                        </form>
+                    </div>`
+                $("#" + span_id).html(roi)
+            }else{
+                $("#loading").show();
+                var start_date = "";
+                var end_date = "";
+                if (span_id == "pre_week"){
+                    start_date = prev_start
+                    end_date = prev_end
+                }else if (span_id == "curr_week"){
+                    start_date = current_start
+                    end_date = current_end
+                }else if (span_id == "nxt_week"){
+                    start_date = next_start
+                    end_date = next_end
+                } 
+                
+
+                $.ajax({
+                    url: site_url + "/getcmts_userwise",
+                    type: 'POST',
+                    data: {
+                        from_date : start_date,
+                        to_date : end_date,
+                        roi_userid: roi_user_id
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#loading").hide();
+                        console.log("data:",data)
+                        roi_type.push(data.R),roi_type.push(data.O),roi_type.push(data.I)
+                        var r_count = data.R.length
+                        var o_count = data.O.length
+                        var i_count = data.I.length
+                        roi += `<div class="table table-bordered pl-4 w-75">
+                                <div class="row"><div class="col col-sm-3 roi_list" data-id="0"><strong>R - Result</strong><div class="float-right"><span class="badge badge-primary">`+r_count+`</span></div></div><div class="col"></div></div>
+                                <div class="row pt-5"><div class="col col-sm-3 roi_list" data-id="1"><strong>O - Objective</strong><div class="float-right"><span class="badge badge-primary">`+o_count+`</span></div></div><div class="col"><a href="/createnewobj/`+roi_user_id+`" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></a></div></div>
+                                <div class="row pt-5"><div class="col col-sm-3 roi_list" data-id="2"><strong>I - Ideas</strong><div class="float-right"><span class="badge badge-primary">`+i_count+`</span></div></div><div class="col"></div></div>
+                            </div>`
+                        $("#" + span_id).html(roi)
+                    }
+                });
+                
+            }
+            
+            $(".week_range").val(moment().format("DD-MMM-YY"))
+            $(".week_range").datepicker({ dateFormat: 'dd-M-y',
+                                        changeMonth: true,
+                                        changeYear: true });
+
+            
+        })
+
+        $(document).on("click", ".roi_list", function(){
+            var type = $(this).data("id");
+            
+            var object = roi_type[type]
+           
+            console.log("click",object)
+            $("#roi_commands").click()
+            var Table = $('#myTable').DataTable();
+            Table.clear();
+            var count = 0;
+            if (object.length == 0 ){
+              $("#tbody").html("")
+              $("#tbody").html("<tr><td colspan='2'>No Datas Availabe</td></tr>")
+            }else{
+                object.forEach(element => {
+                    count ++;
+                    var update_by = " updated on "+ moment(element.MODIFIED_ON).format("DD-MMM-YY hh:mm A")
+                    if(element.MANAGER_NAME != null){
+                      update_by = "updated by:" + element.MANAGER_NAME +" on "+ moment(element.MODIFIED_ON).format("DD-MMM-YY hh:mm A")
+                    }
+                    Table.row.add([
+                        count,
+                        element.COMMENTS + "<br> <p style='font-size:13px;color:red;'>"+ update_by +"</p> ",
+                    ]).draw();
+                });
+              }
+            
+            // console.log(tdata);
+            // $("#tbody").html(tdata)
+            // window.location.href = "/weeklycmt_userwise?tdata=" + object;
+            // alert(type);
+            // console.log(object)
+            // $.ajax({
+            //   url: site_url + "/weeklycmt_userwise",
+            //   type: 'POST',
+            //   data: {
+            //       tdata : object,
+            //       type : "pcn",
+            //       roi_user_id : roi_user_id,
+            //       roi_user_name : roi_user_name
+            //   },
+            //   dataType: 'json',
+            //   success: function (data) {
+            //       console.log("data:",data)
+                  
+            //   }
+            // });
+
+        })
+
+        
+
+    </script>
+
+</body>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css"
+        href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        .button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button2 {
+            background-color: #008CBA;
+        }
+
+        /* Blue */
+        .button3 {
+            background-color: #f44336;
+        }
+
+        /* Red */
+        .button4 {
+            background-color: #e7e7e7;
+            color: black;
+        }
+
+        /* Gray */
+        .button5 {
+            background-color: #555555;
+        }
+
+        /* Black */
+
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 180px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .rejectclose {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .rejectclose:hover,
+        .rejectclose:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        select {
+            font: 400 12px/1.3 sans-serif;
+            -webkit-appearance: none;
+            appearance: none;
+            color: var(--baseFg);
+            border: 1px solid var(--baseFg);
+            line-height: 1;
+            outline: 0;
+            padding: 0.65em 2.5em 0.55em 0.75em;
+            border-radius: var(--radius);
+            background-color: var(--baseBg);
+            background-image: linear-gradient(var(--baseFg), var(--baseFg)),
+                linear-gradient(-135deg, transparent 50%, var(--accentBg) 50%),
+                linear-gradient(-225deg, transparent 50%, var(--accentBg) 50%),
+                linear-gradient(var(--accentBg) 42%, var(--accentFg) 42%);
+            background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+            background-size: 1px 100%, 20px 22px, 20px 22px, 20px 100%;
+            background-position: right 20px center, right bottom, right bottom, right bottom;
+        }
+
+        select:hover {
+            background-image: linear-gradient(var(--accentFg), var(--accentFg)),
+                linear-gradient(-135deg, transparent 50%, var(--accentFg) 50%),
+                linear-gradient(-225deg, transparent 50%, var(--accentFg) 50%),
+                linear-gradient(var(--accentFg) 42%, var(--accentBg) 42%);
+        }
+
+        select:active {
+            background-image: linear-gradient(var(--accentFg), var(--accentFg)),
+                linear-gradient(-135deg, transparent 50%, var(--accentFg) 50%),
+                linear-gradient(-225deg, transparent 50%, var(--accentFg) 50%),
+                linear-gradient(var(--accentFg) 42%, var(--accentBg) 42%);
+            color: var(--accentBg);
+            border-color: var(--accentFg);
+            background-color: var(--accentFg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style="text-align: center;">Document Tracking</h1><br><br>
+    <table id="lpo_table">
+        <thead>
+            <tr>
+                <th>Build Code</th>
+                <th>Property</th>
+                <th>Unit</th>
+                <th>Lease#</th>
+                <th>Customer</th>
+                <th>No Of RMS</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Comments</th>
+                <th>Status</th>
+                <th>Enable Status</th>
+                <th>Tool Tip</th>
+                <th>Enable Status 1</th>
+                <th>Tool Tip 1</th>
+                <th>Enable Status 2</th>
+                <th>Tool Tip 2</th>
+                <th>Enable Status 3</th>
+                <th>Tool Tip 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(i=0;i<lpodata.length; i++) {%>
+                <tr value="<%= lpodata[i].LPO_ID %>">
+                    <td>
+                        <%= lpodata[i].BUILD_CODE %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].PROPERTY_NAME %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].UNIT %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].LEASE_ID %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].CUSTOMER_NAME %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].NOOFRMS %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].LEASE_COMMENCEMENT_DATE %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].LEASE_TERMINATION_DATE %>
+                    </td>
+                    <td>
+                        <p style="color: royalblue;">
+                            <span class="clickStatus">
+                                <%= lpodata[i].STATUS_NAME %>
+                            </span>
+                            <span class="clickStatus1">
+                                <%= lpodata[i].STATUS_NAME_1 %>
+                            </span>
+                            <span class="clickStatus2">
+                                <%= lpodata[i].STATUS_NAME_2 %>
+                            </span>
+                            <span class="clickStatus3">
+                                <%= lpodata[i].STATUS_NAME_3 %>
+                            </span>
+                        </p>
+                    </td>
+                    <td>
+                        <%= lpodata[i].LATEST_COMMENT %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].STATUS %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].ENABLE_STATUS %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].TOOL_TIP %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].ENABLE_STATUS_1 %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].TOOL_TIP_1 %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].ENABLE_STATUS_2 %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].TOOL_TIP_2 %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].ENABLE_STATUS_3 %>
+                    </td>
+                    <td>
+                        <%= lpodata[i].TOOL_TIP_3 %>
+                    </td>
+
+                </tr>
+                <%}%>
+        </tbody>
+    </table>
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <span id="closemodal" class="close" style="margin-left: 95%;">&times;</span>
+            <h3>Document Tracking</h3>
+
+            <form>
+
+                <input id="leaseId" name="leaseId" type="hidden">
+                <input id="usertype" name="usertype" type="hidden">
+                <input id="userInfoId" name="userInfoId" type="hidden">
+
+                <label for="selectModeOfDelivery">Mode Of Delivery:</label>
+                <select id="selectModeOfDelivery" name="selectModeOfDelivery" style="font-size: 18px;">
+                    <option value="0">----Select---</option>
+                    <option value="In Hand">In Hand</option>
+                    <option value="Driver">Driver</option>
+                    <option value="Courier">Courier</option>
+                    <option value="Building">Building</option>
+                    <option value="Office">Office</option>
+                </select>
+                <br>
+                <label for="approveLabel">Description</label>
+                <textarea id="approveComment" name="approveComment" rows="4" cols="80"
+                    style="width: 100% !important;"></textarea>
+                <p id="error_approve_comment" style="font-size: 1.5rem !important; color:red"></p>
+                <br><br>
+                <input type="button" id="closeApproval" class="btn btn-dark" style="margin-left: 30%;" value="Close">
+                <input type="button" id="rejectPayment" class="btn btn-danger" value="Reject">
+                <input type="button" id="approvePayment" class="btn btn-success" value="Approve">
+                <input type="button" id="approveForwardPayment" class="btn btn-success" value="Approve & Forward">
+            </form>
+        </div>
+
+    </div>
+
+
+
+    <script type="text/javascript" src="<%-__basedir%>/js/currentdetails.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+
+
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        var IshardCopyDiv = document.getElementById("IshardCopy");
+        var showDetailsBoxDiv = document.getElementById("showDetailsBox");
+
+        var rejectmodal = document.getElementById("rejectModal");
+        var rejectspan = document.getElementsByClassName("rejectclose")[0];
+
+        var user_id = '<%- userInfoId %>';
+        var userType = '<%- userType %>';
+        var site_url = '<%- site_url %>';
+        var type_id = '<%- type_id %>';
+        var PAYMENT_DETAIL = [];
+        var filterPaymentData = [];
+        var mlist;
+        var lpoManagerList = [];
+        var isChecked = false;
+
+        $(document).ready(function () {
+
+            var table = $('#lpo_table').DataTable();
+            //table.columns([14, 15]).visible(false);
+            
+
+            $('#lpo_table tbody').on('click', '.clickStatus', function () {
+
+                modal.style.display = "block";
+                $('#rejectPayment').show();
+                $('#approvePayment').hide();
+                $('#approveForwardPayment').hide();
+                $('#approvePayment').val('Yes');
+
+                var data = table.row($(this).parents('tr')).data();
+                console.log(data);
+                console.log(parseInt(data[3]));
+
+            });
+
+            $('input[type="checkbox"]').click(function () {
+                if ($(this).is(":checked")) {
+                    console.log("Checkbox is checked.");
+                    isChecked = true;
+                    showDetailsBoxDiv.style.display = "block";
+                }
+                else if ($(this).is(":not(:checked)")) {
+                    console.log("Checkbox is unchecked.");
+                    isChecked = false;
+                    showDetailsBoxDiv.style.display = "none";
+                }
+            });
+
+        });
+
+    
+
+        $('#closemodal').on('click', function () {
+            PAYMENT_DETAIL = [];
+            modal.style.display = "none";
+        });
+
+
+        $('#rejectclosemodal').on('click', function () {
+            rejectmodal.style.display = "none";
+        });
+
+
+        $('#closeApproval').on('click', function () {
+            PAYMENT_DETAIL = [];
+            modal.style.display = "none";
+        });
+
+        $('#closeReject').on('click', function () {
+            rejectmodal.style.display = "none";
+        });
+
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        window.onclick = function (event) {
+            if (event.target == rejectmodal) {
+                rejectmodal.style.display = "none";
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,694 @@
+<body>
+    <!-- Sidenav -->
+    <% include ../partials/sidebar %>
+    <!-- Main content -->
+    <div class="main-content">
+
+        <div class="loader_post" id="loading">
+            <div class="loader"></div><!-- Place at bottom of page -->
+        </div>
+        <!-- Header -->
+        <% include ../partials/navbar %>
+        <% include ../partials/pages_header %>
+        <!-- Page content -->
+
+        <div class="nav-wrapper">
+            <div>
+                <a href="/selectweektype/<%-userID %>" class="btn btn-dark text-white"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                <div class="text-center"><h2>Reportee ROI</h2></div>
+                
+            </div>
+
+            <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link mb-sm-3 mb-md-0 active tab-show" data-tabname="Results"
+                        id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab"
+                        aria-controls="tabs-icons-text-1" aria-selected="true">
+                        <i class="far fa-list-alt mr-2" style="font-size: 25px;"></i>Results <span id="result_count">(0)
+                        </span></a>
+                    <input type="hidden" id="resultCount" name="resultCount" value="">
+                    <input type="hidden" id="resultsCommentsId" name="resultCommentsId" value="">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mb-sm-3 mb-md-0 tab-show" data-tabname="Objectives" id="tabs-icons-text-2-tab"
+                        data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2"
+                        aria-selected="false">
+                        <i class="fas fa-bullseye mr-2" style="font-size: 25px;"></i>Objectives <span id="obj_count">(0)
+                        </span></a>
+                    <input type="hidden" id="objectCount" name="objectCount" value="">
+                    <input type="hidden" id="objectCommentsId" name="objectCommentsId" value="">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mb-sm-3 mb-md-0 tab-show" data-tabname="Ideas" id="tabs-icons-text-3-tab"
+                        data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3"
+                        aria-selected="false">
+                        <i class="far fa-lightbulb mr-2" style="font-size: 25px;"></i>Ideas <span id="idea_count">(0)
+                        </span></a>
+                    <input type="hidden" id="ideaCount" name="ideaCount" value="">
+                    <input type="hidden" id="ideaCommentsId" name="ideaCommentsId" value="">
+                </li>
+            </ul>
+        </div>
+
+        <!-- <div class="card card-model"> -->
+
+        <div class="card shadow">
+            <div class="card-body">
+                <!-- <h2>Edit Result</h2> -->
+                <div style="float: right;">
+                    <button id="addNewComment" style="background-color:#5e72e4 !important"
+                        class="btn btn-success mt-4 mb-4"><i class="fas fa-plus-circle mr-2"></i>Add</button>
+                    <button id="updateComment" style="background-color:#5e72e4 !important"
+                        class="btn btn-success mt-4 mb-4"><i class="fas fa-edit mr-2"></i>Update</button>
+                    <input type="hidden" id="currenttabvalue" name="currenttabvalue" value="" />
+                </div>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
+                        aria-labelledby="tabs-icons-text-1-tab">
+                        <div id="resultsection">
+                            <!-- <textarea name="resultRoiComment" class="form-control"  rows="3" placeholder="Write a large text here ..."></textarea> -->
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel"
+                        aria-labelledby="tabs-icons-text-2-tab">                        
+                            <div id="objectivesection">
+                                <!-- <textarea name="resultRoiComment" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Write a large text here ..."></textarea> -->
+                            </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel"
+                        aria-labelledby="tabs-icons-text-3-tab">                        
+                            <div id="ideasection">
+                                <!-- <textarea name="resultRoiComment" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Write a large text here ..."></textarea> -->
+                            </div>
+                    </div>
+                </div>
+
+                <div style="margin-left: 25%;">
+                    <button id="addNewCommentbottom" style="background-color:#5e72e4 !important"
+                        class="btn btn-success mt-4 mb-4"><i class="fas fa-plus-circle mr-2"></i>Add</button>
+                    <button id="updateCommentbottom" style="background-color:#5e72e4 !important"
+                        class="btn btn-success mt-4 mb-4"><i class="fas fa-edit mr-2"></i>Update</button>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+        <input class="btn btn-info btn-xs" type="hidden" data-toggle="modal" data-target="#exampleModal" id="modelopen">
+        <input type="hidden" class="btn btn-secondary" data-dismiss="modal" id="closemodelfile">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Select</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" id="uploadChildId" value="">
+                            <label for="avatar">Choose a file:</label>
+                            <input type="file" id="file" multiple name="avatar"><br>
+                            <span id="err_msg" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="uploadfile" name="uploadfile" class="btn btn-primary">Upload</button>
+                    </div>
+                    <div class="form-group">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">File Name</th>
+                                    <th scope="col">File Size</th>
+                                    <th scope="col">Download</th>
+                                </tr>
+                            </thead>
+                            <tbody id="file_list">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Include scripts -->
+        <% include ../partials/scripts %>
+
+        <!-- Modal -->
+
+        <input type="hidden" type="button" data-toggle="modal" id="details_click" data-target="#detailsModal">
+        <!-- jQuery -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+      
+        <!-- reference Moment.js library -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+        
+            $('#lodingbtn').hide();
+            $("#loading").hide();
+
+            $(document).ready(function () {
+                getHistoryDetails();
+            });
+
+            var user_id = <%- JSON.stringify(userID) %>;
+            
+            function getHistoryDetails() {
+                $("#loading").show();
+
+                $.ajax({
+                    url: site_url + "/getroidetails",
+                    type: 'POST',
+                    data: {
+                        user_id: user_id
+                    },
+                    dataType: 'html',
+                    success: function (data) {
+                        var result = JSON.parse(data);
+                        var result_comment = '';
+                        var objective_comment = '';
+                        var idea_comment = '';
+                        // console.log(result);
+
+                        $("#loading").hide();
+                        var idea = result.Ideas;
+                        var object = result.Object;
+                        var res = result.Result;
+                        // console.log(result);
+                        $('#idea_count').html('(' + idea.length + ')');
+                        $('#obj_count').html('(' + object.length + ')');
+                        $('#result_count').html('(' + res.length + ')');
+
+                        var res_length = res.length;
+                        var object_length = object.length;
+                        var idea_length = idea.length;
+                      
+                        if(res_length > 0 ){
+                            $('#resultsCommentsId').val(res[0].COMMENTS_ID);
+                        }
+
+                        if(object_length >0){
+                            $('#objectCommentsId').val(object[0].COMMENTS_ID);
+                        }
+
+                        if(idea_length > 0){
+                            $('#ideaCommentsId').val(idea[0].COMMENTS_ID);
+                        }
+                         
+
+                        $('#resultCount').val(res_length);
+                        $('#objectCount').val(object_length);
+                        $('#ideaCount').val(idea_length);
+
+                        if (res.length > 0) {
+                            result_comment = '';
+                            $("#resultsection").html("");
+                            for (var i = 0; i < res.length; i++) {
+
+                                var _date = moment(res[i].MODIFIED_ON);
+                                MODIFIED_ON = _date.format('DD-MM-YYYY hh:mm:ss a');
+
+                                result_comment += '<div id="resultCommentDiv" class="result-insert-row">' +
+                                    '<textarea class="form-control resultCommentsId" id="resultCommentsId" ' +
+                                    'data-childid="'+ res[i].COMMENTS_CHILD_ID +'" name="resultCommentsId" maxlength="4000" rows="3">' + res[i].COMMENTS +
+                                    '</textarea> <div id="result_textarea_' + res[i].COMMENTS_CHILD_ID + '">4000 characters only allowed.</div>' +
+                                    '<input type="hidden" name ="insertchildid" class="insertchildid" value="' + res[i].COMMENTS_CHILD_ID + '">' +
+                                    '<input type="hidden" name ="insertcommentsid" class="insertcommentsid" value="' + res[i].COMMENTS_ID + '">' +
+                                    '<button data-childid="' + res[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 result-revert" ><i class="fas fa-undo mr-2"></i>Revert</button>' +
+                                    '<button data-childid="' + res[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button>' +
+                                    '<button data-childid="' + res[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 attach" ><i class="fas fa-paperclip mr-2"></i>Attach</button>' +
+                                    '<p id="resultupdatedon" style="color:red">Last modified on ' + MODIFIED_ON + ' </p></div>';
+                            }
+                            $('#resultsection').append(result_comment);
+
+                        } else {
+                            result_comment = '';
+                            $("#resultsection").html("");
+                            result_comment = '<div id="resultCommentDiv" class="result-insert-row"><textarea class="form-control resultCommentsId" id="resultCommentsId" name="resultCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="result_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                                '<button data-childid="' + 0 + '" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+                            $('#resultsection').append(result_comment);
+                        }
+
+                        if (object.length > 0) {
+
+                            objective_comment = '';
+                            $("#objectivesection").html("");
+
+                            for (var i = 0; i < object.length; i++) {
+                                var Date = moment(object[i].MODIFIED_ON);
+                                MODIFIED_ON = Date.format('DD-MM-YYYY hh:mm:ss a');
+
+                                objective_comment += '<div id="objectiveCommentDiv" class="object-insert-row"><textarea class="form-control objectiveCommentsId" id="objectiveCommentsId" name="objectiveCommentsId" maxlength="4000" rows="3">' + object[i].COMMENTS + '</textarea> <div id="object_textarea_' + object[i].COMMENTS_CHILD_ID + '">4000 characters only allowed.</div>' +
+                                    '<input type="hidden" name ="objectinsertchildid" class="objectinsertchildid" value="' + object[i].COMMENTS_CHILD_ID + '">' +
+                                    '<input type="hidden" name ="objectinsertcommentsid" class="objectinsertcommentsid" value="' + object[i].COMMENTS_ID + '">' +
+                                    '<button data-childid="' + object[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 move-result" ><i class="fas fa-sync-alt mr-2"></i>Move to Result</button>' +
+                                    '<button data-childid="' + object[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button>' +
+                                    '<button data-childid="' + object[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 attach" ><i class="fas fa-paperclip mr-2"></i>Attach</button>' +
+                                    '<p id="objectiveupdatedon" style="color:red">Last modified on ' + MODIFIED_ON + ' </p></div>';
+                            }
+                            $('#objectivesection').append(objective_comment);
+
+                        } else {
+                            objective_comment = '';
+                            $("#objectivesection").html("");
+
+                            objective_comment = '<div id="objectiveCommentDiv" class="object-insert-row"><textarea class="form-control objectiveCommentsId" id="objectiveCommentsId" name="objectiveCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="object_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                                '<button data-childid="' + 0 + '" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+                            $('#objectivesection').append(objective_comment);
+                        }
+
+                        if (idea.length > 0) {
+                            idea_comment = '';
+                            $("#ideasection").html("");
+
+                            for (var i = 0; i < idea.length; i++) {
+                                var Date = moment(idea[i].MODIFIED_ON);
+                                MODIFIED_ON = Date.format('DD-MM-YYYY hh:mm:ss a');
+
+                                idea_comment += '<div id="ideaCommentDiv" class="idea-insert-row"><textarea class="form-control ideasCommentsId" id="ideasCommentsId" name="ideasCommentsId" maxlength="4000" rows="3">' + idea[i].COMMENTS + '</textarea> <div id="idea_textarea_' + idea[i].COMMENTS_CHILD_ID + '">4000 characters only allowed.</div>' +
+                                    '<input type="hidden" name ="ideainsertchildid" class="ideainsertchildid" value="' + idea[i].COMMENTS_CHILD_ID + '">' +
+                                    '<input type="hidden" name ="ideainsertcommentsid" class="ideainsertcommentsid" value="' + idea[i].COMMENTS_ID + '">' +
+                                    '<button data-childid="' + idea[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button>' +
+                                    '<button data-childid="' + idea[i].COMMENTS_CHILD_ID + '" class="btn btn-success mt-4 mb-4 attach"><i class="fas fa-paperclip mr-2"></i>Attach</button>' +
+                                    '<p id="objectiveupdatedon" style="color:red">Last modified on ' + MODIFIED_ON + ' </p></div>';
+                            }
+                            $('#ideasection').append(idea_comment);
+
+                        } else {
+                            idea_comment = '';
+                            $("#ideasection").html("");
+                            idea_comment = '<div id="ideaCommentDiv" class="idea-insert-row"><textarea class="form-control ideasCommentsId" id="ideasCommentsId" name="ideasCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="idea_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                                '<button data-childid="' + 0 + '" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+                            $('#ideasection').append(idea_comment);
+                        }
+                    }
+                });
+            }
+
+            $(document).on('click', '.result-revert', function () {
+                console.log($(this).data('childid'));
+                let child_id = $(this).data('childid');
+
+                $.ajax({
+                    url: site_url + "/getMoveResultToObjective",
+                    type: 'POST',
+                    data: {
+                        user_info_id: user_id,
+                        comments_child_id: child_id
+                    },
+                    dataType: 'html',
+                    success: function (data) {
+                        console.log(data);
+                        getHistoryDetails();
+                    }
+                });
+            });
+
+            $(document).on('click', '.delete', function () {
+                console.log($(this).data('childid'));
+                let child_id = $(this).data('childid');
+
+                if(child_id > 0){
+                
+                    $.ajax({
+                        url: site_url + "/getdeleteroicomment",
+                        type: 'POST',
+                        data: {
+                                user_info_id: user_id,
+                                comments_child_id: child_id
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            getHistoryDetails();
+                        }
+                    });
+                }else{
+                    getHistoryDetails();
+                }
+            });
+
+            $(document).on('click', '.move-result', function () {
+                console.log($(this).data('childid'));
+                let child_id = $(this).data('childid');
+
+                $.ajax({
+                    url: site_url + "/getMoveObjectiveToResult",
+                    type: 'POST',
+                    data: {
+                        user_info_id: user_id,
+                        comments_child_id: child_id
+                    },
+                    dataType: 'html',
+                    success: function (data) {
+                        console.log(data);
+                        getHistoryDetails();
+                    }
+                });
+
+            });
+
+            $(document).on('click', '.tab-show', function () {
+                var tab = $(this).data('tabname');
+                $('input[name="currenttabvalue"]').val(tab);
+            });
+
+            $('#addNewComment').on('click', function () {
+
+                var tab_name = $('#currenttabvalue').val();
+
+                if (tab_name == "") {
+
+                    var text = $('#tabs-icons-text').find('.active').data('tabname');
+                    var tabtrim = text.trim();
+                    tab_name = tabtrim;
+                }
+
+                if (tab_name == 'Results') {
+                    var result_comment = '';
+
+                    result_comment = '<div id="resultCommentDiv" class="result-insert-row"><textarea class="form-control resultCommentsId" id="resultCommentsId" name="resultCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="result_textarea_'+ 0 +'">4000 characters only allowed.</div>' +
+                        '<input type="hidden" name ="insertchildid" class="insertchildid" value="0">' +
+                        '<input type="hidden" name ="insertcommentsid" class="insertcommentsid" value="0">' +
+                        '<button data-childid="0" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+
+                    $('#resultsection').prepend(result_comment);
+
+                } else if (tab_name == 'Objectives') {
+
+                    var ojective_comment = '';
+
+                    ojective_comment = '<div id="objectiveCommentDiv" class="object-insert-row"><textarea class="form-control objectiveCommentsId" id="objectiveCommentsId" name="objectiveCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="object_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                        '<input type="hidden" name ="objectinsertchildid" class="objectinsertchildid" value="0">' +
+                        '<input type="hidden" name ="objectinsertcommentsid" class="objectinsertcommentsid" value="0">' +
+                        '<button data-childid="0" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+
+                    $('#objectivesection').prepend(ojective_comment);
+
+                } else {
+                    var idea_comment = '';
+
+                    idea_comment = '<div id="ideaCommentDiv" class="idea-insert-row"><textarea class="form-control ideasCommentsId" id="ideasCommentsId" name="ideasCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="idea_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                        '<input type="hidden" name ="ideainsertchildid" class="ideainsertchildid" value="0">' +
+                        '<input type="hidden" name ="ideainsertcommentsid" class="ideainsertcommentsid" value="0">' +
+                        '<button data-childid="0" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+
+                    $('#ideasection').prepend(idea_comment);
+                }
+            });
+
+            $('#updateComment').on('click', function () {
+                getUpdateComments();
+            });
+
+            $('#updateCommentbottom').on('click', function () {
+                getUpdateComments();
+            });
+
+            function getUpdateComments() {
+                var arr = [];
+                var comments_id = '';
+                var tab_name = $('#currenttabvalue').val();
+                var tab_count = 0;
+                var type_string = '';
+
+                if (tab_name == "") {
+                    tab_count = 0;
+                    var text = $('#tabs-icons-text').find('.active').data('tabname');
+                    var tabtrim = text.trim();
+                    tab_name = tabtrim;
+                }
+
+                if (tab_name == 'Results') {
+
+                    tab_count = $('#resultCount').val();
+                    type_string = 'R';
+
+                    $(".result-insert-row").each(function () {
+
+                        var comment = $(this).find('textarea[name=resultCommentsId]').val();
+                        var comments_child_id = $(this).find('input[name=insertchildid]').val();
+                        var comments_id = $(this).find('input[name=insertcommentsid]').val();
+                        arr.push({
+                            comments_id: comments_id,
+                            comments: comment,
+                            comments_child_id: comments_child_id
+                        });
+                    });
+
+                } else if (tab_name == 'Objectives') {
+
+                    tab_count = $('#objectCount').val();
+                    type_string = 'O';
+
+                    $(".object-insert-row").each(function () {
+
+                        var obj_comment = $(this).find('textarea[name=objectiveCommentsId]').val();
+                        var obj_comments_child_id = $(this).find('input[name=objectinsertchildid]').val();
+                        var obj_comments_id = $(this).find('input[name=objectinsertcommentsid]').val();
+                        arr.push({
+                            comments_id: obj_comments_id,
+                            comments: obj_comment,
+                            comments_child_id: obj_comments_child_id
+                        });
+                    });
+
+                } else {
+
+                    tab_count = $('#ideaCount').val();
+                    type_string = 'I';
+
+                    $(".idea-insert-row").each(function () {
+
+                        var idea_comment = $(this).find('textarea[name=ideasCommentsId]').val();
+                        var idea_comments_child_id = $(this).find('input[name=ideainsertchildid]').val();
+                        var idea_comments_id = $(this).find('input[name=ideainsertcommentsid]').val();
+                        arr.push({
+                            comments_id: idea_comments_id,
+                            comments: idea_comment,
+                            comments_child_id: idea_comments_child_id
+                        });
+                    });
+                }
+
+                console.log(arr);
+
+                if (tab_name != 'Objectives')
+                  
+                    if (tab_name == 'Results') {
+                        comments_id = $("#resultsCommentsId").val();
+                    }else{
+                        comments_id = $("#ideaCommentsId").val();
+                    }
+
+                else {
+                    comments_id = '';
+                }
+
+                if (tab_count > 0) {
+                    $.ajax({
+                        url: site_url + "/getupdatecurrentroiresult",
+                        type: 'POST',
+                        data: {
+                            user_info_id: user_id,
+                            comments_val: JSON.stringify(arr),
+                            comments_id: comments_id
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            getHistoryDetails();
+                        }
+                    });
+                } else { 
+                    $.ajax({
+                        url: site_url + "/dailycommentsinsert",
+                        type: 'POST',
+                        data: {
+                            user_info_id: user_id,
+                            COMMENTS: JSON.stringify(arr),
+                            insert_type: 'Current',
+                            comments_type: type_string,
+                            created_by: user_id,
+                            modified_by: user_id,
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            getHistoryDetails();
+                        }
+                    });
+                }
+            }
+
+            function bytesToSize(bytes) {
+                return (bytes / 1048576).toFixed(2);
+            }
+
+            function bytesToSize1(bytes) {
+                return (bytes / 1048576).toFixed(2) + " MB";
+            }
+
+
+            var file_name = [];
+            var size = [];
+            var imageURI = [];
+
+            $(document).on('change', '#file', function (event) {
+                $('#err_msg').html('');
+                file_name = [];
+                size = [];
+                imageURI = [];
+                let file = event.target.files;
+                for (let i = 0; i < file.length; i++) {
+                    let sizeinMB = bytesToSize(file[i].size);
+                    if (sizeinMB > 2) {
+                        $('#err_msg').html('The file size is too large. File size is allowed only 2 MB.');
+                        break;
+                    }
+                    file_name.push(file[i].name);
+                    size.push(file[i].size);
+
+                    let reader = new FileReader();
+                    reader.readAsDataURL(file[i]);
+                    reader.onloadend = (e) => {
+                        imageURI.push(reader.result);
+                    };
+                    reader.onerror = function (error) {
+                        console.log('Error: ', error);
+                    };
+                }
+            });
+
+
+
+            $('#uploadfile').on('click', function () {
+
+                var childId = $('#uploadChildId').val();
+
+                if (file_name.length > 0) {
+                    $.ajax({
+                        url: site_url + "/getuploadroifiles",
+                        type: 'POST',
+                        data: {
+                            user_info_id: user_id,
+                            imageURI_data: JSON.stringify(imageURI),
+                            name: JSON.stringify(file_name),
+                            size_data: JSON.stringify(size),
+                            COMMENTS_ID: childId
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            getHistoryDetails();
+                        }
+                    });
+
+                } else {
+                    $('#err_msg').html('Please select file');
+                }
+            });
+
+            $(document).on('click', '.attach', function () {
+                console.log($(this).data('childid'));
+
+                let child_id = $(this).data('childid');
+
+                $('#uploadChildId').val(child_id);
+                $('#modelopen').click();
+
+                $.ajax({
+                    url: site_url + "/weeklyUploadedFileList",
+                    type: 'POST',
+                    data: {
+                        COMMENTS_ID: child_id
+                    },
+                    dataType: 'html',
+                    success: function (data) {
+                        var tablelist = '';
+                        var result = JSON.parse(data);
+                        console.log(data);
+                        var a = 1;
+                        for (var i = 0; i < result.length; i++) {
+                            tablelist += `<tr><th scope="row"><div class="media align-items-center"><div class="media-body">
+                            <span class="mb-0 text-sm">`+ a + `</span></div></div></th><th scope="row">
+                            <div class="media align-items-center"><div class="media-body">
+                            <span class="mb-0 text-sm">`+ result[i].FILE_NAME + `</span></div></div></th>
+                            <th scope="row"><div class="media align-items-center"><div class="media-body">
+                            <span class="mb-0 text-sm">`+ bytesToSize1(result[i].FILE_SIZE) + `</span></div></div></th>
+                            <th scope="row"><div class="media align-items-center"><div class="media-body">
+                            <button class=btn btn-primary btn-xs" id="download" type="button">Download</button>
+                            <input type="hidden" class="file_id" id="file_id" value="`+ result[i].WEEKLYCOMMENTS_FILES_ID + `">`
+                            tablelist += `</div></div></th></tr>`;
+                            a++;
+                        }
+                        $("#file_list").html(tablelist);
+                    }
+                });
+
+            });
+
+            $(document).on('click', '#download', function () {
+                $("#loading").show();
+                var get_file_id = $(this).closest("tr").find(".file_id").val();
+                let url = '<%-__basedir%>/weeklyroi/download-file/' + get_file_id;
+                window.open(url, '_blank');
+                $("#loading").hide();
+            });
+          
+
+            $('#addNewCommentbottom').on('click', function () {
+
+                var tab_name = $('#currenttabvalue').val();
+
+                if (tab_name == "") {
+
+                    var text = $('#tabs-icons-text').find('.active').data('tabname');
+                    var tabtrim = text.trim();
+                    tab_name = tabtrim;
+                }
+
+                if (tab_name == 'Results') {
+                    var result_comment = '';
+
+                    result_comment = '<div id="resultCommentDiv" class="result-insert-row"><textarea class="form-control resultCommentsId" id="resultCommentsId" name="resultCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="result_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                        '<input type="hidden" name ="insertchildid" class="insertchildid" value="0">' +
+                        '<input type="hidden" name ="insertcommentsid" class="insertcommentsid" value="0">' +
+                        '<button data-childid="0" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+
+                    $('#resultsection').append(result_comment);
+
+                } else if (tab_name == 'Objectives') {
+
+                    var ojective_comment = '';
+
+                    ojective_comment = '<div id="objectiveCommentDiv" class="object-insert-row"><textarea class="form-control objectiveCommentsId" id="objectiveCommentsId" name="objectiveCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="object_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                        '<input type="hidden" name ="objectinsertchildid" class="objectinsertchildid" value="0">' +
+                        '<input type="hidden" name ="objectinsertcommentsid" class="objectinsertcommentsid" value="0">' +
+                        '<button data-childid="0" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+
+                    $('#objectivesection').append(ojective_comment);
+
+                } else {
+                    var idea_comment = '';
+
+                    idea_comment = '<div id="ideaCommentDiv" class="idea-insert-row"><textarea class="form-control ideasCommentsId" id="ideasCommentsId" name="ideasCommentsId" maxlength="4000" rows="3" placeholder="Write a large text here ..."></textarea> <div id="idea_textarea_' + 0 + '">4000 characters only allowed.</div>' +
+                        '<input type="hidden" name ="ideainsertchildid" class="ideainsertchildid" value="0">' +
+                        '<input type="hidden" name ="ideainsertcommentsid" class="ideainsertcommentsid" value="0">' +
+                        '<button data-childid="0" class="btn btn-success mt-4 mb-4 delete"><i class="far fa-trash-alt mr-2"></i>Delete</button></div>';
+
+                    $('#ideasection').append(idea_comment);
+                }
+            });
+
+            
+
+        </script>
+</body>

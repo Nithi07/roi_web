@@ -1,0 +1,99 @@
+<body>
+    <!-- Sidenav -->
+    <% include ../partials/sidebar %>
+    <!-- Main content -->
+    <div class="main-content">
+
+        <div class="loader_post" id="loading">
+            <div class="loader"></div><!-- Place at bottom of page -->
+        </div>
+        <!-- Header -->
+        <% include ../partials/navbar %>
+        <% include ../partials/pages_header %>
+        <!-- Page content -->
+
+        <div class="card" style="width: 100% !important;">
+
+            <h2 class="card-title">Reportees</h2>
+    
+            <form id="insertMomData" method="POST" enctype="multipart/form-data" style="padding: 25px;">
+
+                <div class="row">
+                    <%for(i=0;i<userList.length;i++){ %>
+                    
+                    <div class="col-sm-3 pt-2">
+                        <a href="/selectweektype/<%-userList[i].USER_INFO_ID %>" id="user_card">
+                        <div class="card">
+                            <div class="card-body">
+                                <%-userList[i].USER_SURNAME %>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    
+                    <% } %>
+                </div>
+                <input type="hidden" id="user_id" value="">
+
+            </form>            
+        </div>
+    </div>
+
+    <!-- Include scripts -->
+    <% include ../partials/scripts %>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+  
+    <!-- reference Moment.js library -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet"/> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    
+    <script type="text/javascript">
+        // $('#lodingbtn').hide();
+        $("#loading").hide();
+        
+    </script>
+
+    <style>
+        .vl {
+          border-left: 6px solid green;
+          height: 500px;
+        }
+
+        .bootstrap-datetimepicker-widget .datepicker-days table tbody tr:hover {
+            background-color: rgb(77, 52, 42);
+            color:white;
+        }
+
+
+        .card-label {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+            background-color: #f1f1f1;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 25%;
+            padding: 10px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+
+</body>

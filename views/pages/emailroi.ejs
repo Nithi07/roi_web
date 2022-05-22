@@ -1,0 +1,331 @@
+<body>
+    <div class="main-content">
+        <div class="loader_post" id="loading">
+            <div class="loader"></div>
+        </div>
+            
+        <div class="card shadow">
+            <div class="card-body">
+                <h2>Add Results</h2>
+                    <div id="resultsection1">
+                        <textarea class="form-control resultCommentsId" id="resultCommentsId" name="resultCommentsId" rows="3" placeholder="Write a large text here ..."></textarea>
+                    </div>
+                <div style="margin-left: 0%;">                    
+                    <button id="updateResultbottom" style="background-color:#5e72e4 !important"
+                        class="btn btn-success mt-4 mb-4"><i class="fas fa-edit mr-2"></i>Update</button>
+                </div><br>
+				
+				<div class="tab-content" id="myTabContent">                
+					<div >
+                        <ul id="resultsection">
+                        </ul>
+                    </div>                
+				</div>
+            </div>
+            
+
+            <div class="card-body">
+                <h2>Add Objectives</h2>
+                    <div id="objectivesection1">
+                        <textarea class="form-control objectiveCommentsId" id="objectiveCommentsId" name="objectiveCommentsId" rows="3" placeholder="Write a large text here ..."></textarea>
+                    </div>
+                <div style="margin-left: 0%;">                    
+                    <button id="updateCommentbottom" style="background-color:#5e72e4 !important"
+                        class="btn btn-success mt-4 mb-4"><i class="fas fa-edit mr-2"></i>Update</button>
+                </div><br>
+				
+				<div class="tab-content" id="myTabContent">
+                                                       
+                     <div >
+                        <ul id="objectivesection">                               
+                        </ul>
+                     </div>
+                </div>
+                
+            </div>
+            </div>
+
+            
+			
+        </div>
+       
+        <!-- Modal -->
+
+        <input type="hidden" type="button" data-toggle="modal" id="details_click" data-target="#detailsModal">
+        <!-- jQuery -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+        <!-- reference Moment.js library -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+        
+            $('#lodingbtn').hide();
+            $("#loading").hide();
+
+            var user_id = '<%- userInfoId %>';
+            var site_url = '<%- site_url %>';
+            var iv_ = '';
+            var arr_result = [];
+			var arr_objective = [];
+
+            $(document).ready(function () {
+                //getHistoryDetails();
+                //alert(user_id +'  '+ site_url);
+            });
+
+            var btnClick = 0;
+            var resultbtnClick = 0;
+          
+            $('#updateResultbottom').on('click', function () {  
+
+                var _comment = $('#resultCommentsId').val();
+
+                if(resultbtnClick == 0){
+                    if (_comment.length == 0){
+                        alert('Please enter comment.');
+                        return;
+                    }else{
+                        resultbtnClick = 1;
+                        $('#updateResultbottom').prop('disabled', true);
+                        getUpdateResultComments();
+                    }
+
+                }else{
+                    alert('Please wait...');
+                    return;
+                }                
+                
+            });
+
+
+            $('#updateCommentbottom').on('click', function () {  
+                var _comment = $('#objectiveCommentsId').val();
+
+                if(btnClick == 0){
+                    if (_comment.length == 0){
+                        alert('Please enter comment.');
+                        return;
+                    }else{
+                        btnClick = 1;
+                        $('#updateCommentbottom').prop('disabled', true);
+                        getUpdateComments();
+                    }
+
+                }else{
+                    alert('Please wait...');
+                    return;
+                }                
+                
+            });
+
+            function getUpdateResultComments() {
+                var arr = [];
+                var comments_id = '';
+                var tab_name = $('#currenttabvalue').val();
+                var tab_count = 0;
+                var type_string = '';
+
+                tab_name = 'Results';
+
+                
+                if (tab_name == "") {
+                    tab_count = 0;
+                    var text = $('#tabs-icons-text').find('.active').data('tabname');
+                    var tabtrim = text.trim();
+                    tab_name = tabtrim;
+                }
+
+                if (tab_name == 'Results') {
+
+                    tab_count = $('#resultCount').val();
+                    type_string = 'R';
+
+                    var comment = $('#resultCommentsId').val();
+                    var comments_child_id = null;
+                    var comments_id = null;
+
+                    arr.push({
+                            comments_id: comments_id,
+                            comments: comment,
+                            comments_child_id: comments_child_id
+                    });
+
+                    arr_result.push({
+                            comments_id: comments_id,
+                            comments: comment,
+                            comments_child_id: comments_child_id
+                    })
+
+
+                } 
+
+                console.log(arr);
+                
+                comments_id = '';
+                
+
+                if (tab_count > 0) {
+                    $.ajax({
+                        url: site_url + "/getupdatecurrentroiresult",
+                        type: 'POST',
+                        data: {
+                            user_info_id: user_id,
+                            comments_val: JSON.stringify(arr),
+                            comments_id: comments_id
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            getHistoryDetails();
+                        }
+                    });
+                } else { 
+                    $.ajax({
+                        url: site_url + "/getInsertEmailRoi",
+                        type: 'POST',
+                        data: {
+                            user_info_id: user_id,
+                            COMMENTS: JSON.stringify(arr),
+                            insert_type: 'Current',
+                            comments_type: 'R',
+                            created_by: user_id,
+                            modified_by: user_id,
+                            iv: iv_
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            $('#resultCommentsId').val('');
+                            $('#updateResultbottom').prop('disabled', false);
+                            resultbtnClick = 0;
+                            alert("Record updated successfully in today's result");
+
+                            if(arr_result.length > 0){
+							
+								var result_comment = '';
+                                $("#resultsection").html("");
+
+                                for (var i = 0; i < arr_result.length; i++) {
+                            
+									result_comment +='<li>'+ arr_result[i].comments +'</li>';
+                                }
+								$('#resultsection').append(result_comment);
+
+                                
+                            }
+                        }
+                    });
+                }
+            }
+
+            function getUpdateComments() {
+                var arr = [];
+                var comments_id = '';
+                var tab_name = $('#currenttabvalue').val();
+                var tab_count = 0;
+                var type_string = '';
+
+                tab_name = 'Objectives';
+
+                
+                if (tab_name == "") {
+                    tab_count = 0;
+                    var text = $('#tabs-icons-text').find('.active').data('tabname');
+                    var tabtrim = text.trim();
+                    tab_name = tabtrim;
+                }
+
+                if (tab_name == 'Objectives') {
+
+                    tab_count = $('#objectCount').val();
+                    type_string = 'R';
+
+                    var obj_comment = $('#objectiveCommentsId').val();
+                    var obj_comments_child_id = null;
+                    var obj_comments_id = null;
+
+                    arr.push({
+                            comments_id: obj_comments_id,
+                            comments: obj_comment,
+                            comments_child_id: obj_comments_child_id
+                    });
+					
+					arr_objective.push({
+                            comments_id: obj_comments_id,
+                            comments: obj_comment,
+                            comments_child_id: obj_comments_child_id
+                    });
+
+                } 
+
+                console.log(arr);
+
+                if (tab_name != 'Objectives')
+                  
+                    if (tab_name == 'Results') {
+                        comments_id = $("#resultsCommentsId").val();
+                    }else{
+                        comments_id = $("#ideaCommentsId").val();
+                    }
+
+                else {
+                    comments_id = '';
+                }
+
+                if (tab_count > 0) {
+                    $.ajax({
+                        url: site_url + "/getupdatecurrentroiresult",
+                        type: 'POST',
+                        data: {
+                            user_info_id: user_id,
+                            comments_val: JSON.stringify(arr),
+                            comments_id: comments_id
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            getHistoryDetails();
+                        }
+                    });
+                } else { 
+                    $.ajax({
+                        url: site_url + "/getInsertEmailRoiObjective",
+                        type: 'POST',
+                        data: {
+                            user_info_id: user_id,
+                            COMMENTS: JSON.stringify(arr),
+                            insert_type: 'Current',
+                            comments_type: 'O',
+                            created_by: user_id,
+                            modified_by: user_id,
+                            iv: iv_
+                        },
+                        dataType: 'html',
+                        success: function (data) {
+                            console.log(data);
+                            $('#objectiveCommentsId').val('');
+                            $('#updateCommentbottom').prop('disabled', false);
+                            btnClick = 0;
+                            alert("Record updated successfully in today's objective");
+							
+							if(arr_objective.length > 0){
+							
+								var objective_comment = '';
+                                $("#objectivesection").html("");
+
+                                for (var i = 0; i < arr_objective.length; i++) {
+                            
+									objective_comment +='<li>'+ arr_objective[i].comments +'</li>';
+                                }
+								$('#objectivesection').append(objective_comment);
+                                
+                            }
+                        }
+                    });
+                }
+            }
+                
+
+        </script>
+</body>
